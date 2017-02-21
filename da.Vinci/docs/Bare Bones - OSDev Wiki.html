@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)http://wiki.osdev.org/Bare_Bones#Building_a_Cross-Compiler -->
+<html lang="en" dir="ltr" class="client-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bare Bones - OSDev Wiki</title>
+
+<meta name="generator" content="MediaWiki 1.18.0">
+<link rel="shortcut icon" href="http://wiki.osdev.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wiki.osdev.org/opensearch_desc.php" title="OSDev Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.osdev.org/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom feed" href="http://wiki.osdev.org/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="stylesheet" href="./Bare Bones - OSDev Wiki_files/load.php">
+<style type="text/css" media="all">.mw-collapsible-toggle{float:right} li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:4250852ed2349a0d4d0fc6509a3e7d4c */
+</style><style type="text/css" media="all">.js-messagebox{margin:1em 5%;padding:0.5em 2.5%;border:1px solid #ccc;background-color:#fcfcfc;font-size:0.8em}.js-messagebox .js-messagebox-group{margin:1px;padding:0.5em 2.5%;border-bottom:1px solid #ddd}.js-messagebox .js-messagebox-group:last-child{border-bottom:thin none transparent}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:8b08bdc91c52a9ffba396dccfb5b473c */
+</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="./Bare Bones - OSDev Wiki_files/load(1).php">
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:c88e2bcd56513749bec09a7e29cb3ffa */
+</style>
+<script src="./Bare Bones - OSDev Wiki_files/load(2).php"></script><script src="./Bare Bones - OSDev Wiki_files/load(3).php"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Bare_Bones", "wgTitle": "Bare Bones", "wgCurRevisionId": 20362, "wgArticleId": 1741, "wgIsArticle": true, "wgAction": "view", "wgUserName": null, "wgUserGroups": ["*"], "wgCategories": ["Level 1 Tutorials", "Bare bones tutorials", "C", "C++"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script><script type="text/javascript" src="./Bare Bones - OSDev Wiki_files/load(4).php"></script>
+<style type="text/css">/*<![CDATA[*/
+.source-bash {line-height: normal;}
+.source-bash li, .source-bash pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for bash
+ * CSS class: source-bash, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.bash.source-bash .de1, .bash.source-bash .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.bash.source-bash  {font-family:monospace;}
+.bash.source-bash .imp {font-weight: bold; color: red;}
+.bash.source-bash li, .bash.source-bash .li1 {font-weight: normal; vertical-align:top;}
+.bash.source-bash .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.bash.source-bash .li2 {font-weight: bold; vertical-align:top;}
+.bash.source-bash .kw1 {color: #000000; font-weight: bold;}
+.bash.source-bash .kw2 {color: #c20cb9; font-weight: bold;}
+.bash.source-bash .kw3 {color: #7a0874; font-weight: bold;}
+.bash.source-bash .co0 {color: #666666; font-style: italic;}
+.bash.source-bash .co1 {color: #800000;}
+.bash.source-bash .co2 {color: #cc0000; font-style: italic;}
+.bash.source-bash .co3 {color: #000000; font-weight: bold;}
+.bash.source-bash .co4 {color: #666666;}
+.bash.source-bash .es1 {color: #000099; font-weight: bold;}
+.bash.source-bash .es2 {color: #007800;}
+.bash.source-bash .es3 {color: #007800;}
+.bash.source-bash .es4 {color: #007800;}
+.bash.source-bash .es5 {color: #780078;}
+.bash.source-bash .es_h {color: #000099; font-weight: bold;}
+.bash.source-bash .br0 {color: #7a0874; font-weight: bold;}
+.bash.source-bash .sy0 {color: #000000; font-weight: bold;}
+.bash.source-bash .st0 {color: #ff0000;}
+.bash.source-bash .st_h {color: #ff0000;}
+.bash.source-bash .nu0 {color: #000000;}
+.bash.source-bash .re0 {color: #007800;}
+.bash.source-bash .re1 {color: #007800;}
+.bash.source-bash .re2 {color: #007800;}
+.bash.source-bash .re4 {color: #007800;}
+.bash.source-bash .re5 {color: #660033;}
+.bash.source-bash .ln-xtra, .bash.source-bash li.ln-xtra, .bash.source-bash div.ln-xtra {background-color: #ffc;}
+.bash.source-bash span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><style type="text/css">/*<![CDATA[*/
+.source-c {line-height: normal;}
+.source-c li, .source-c pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for c
+ * CSS class: source-c, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.c.source-c .de1, .c.source-c .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.c.source-c  {font-family:monospace;}
+.c.source-c .imp {font-weight: bold; color: red;}
+.c.source-c li, .c.source-c .li1 {font-weight: normal; vertical-align:top;}
+.c.source-c .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.c.source-c .li2 {font-weight: bold; vertical-align:top;}
+.c.source-c .kw1 {color: #b1b100;}
+.c.source-c .kw2 {color: #000000; font-weight: bold;}
+.c.source-c .kw3 {color: #000066;}
+.c.source-c .kw4 {color: #993333;}
+.c.source-c .co1 {color: #666666; font-style: italic;}
+.c.source-c .co2 {color: #339933;}
+.c.source-c .coMULTI {color: #808080; font-style: italic;}
+.c.source-c .es0 {color: #000099; font-weight: bold;}
+.c.source-c .es1 {color: #000099; font-weight: bold;}
+.c.source-c .es2 {color: #660099; font-weight: bold;}
+.c.source-c .es3 {color: #660099; font-weight: bold;}
+.c.source-c .es4 {color: #660099; font-weight: bold;}
+.c.source-c .es5 {color: #006699; font-weight: bold;}
+.c.source-c .br0 {color: #009900;}
+.c.source-c .sy0 {color: #339933;}
+.c.source-c .st0 {color: #ff0000;}
+.c.source-c .nu0 {color: #0000dd;}
+.c.source-c .nu6 {color: #208080;}
+.c.source-c .nu8 {color: #208080;}
+.c.source-c .nu12 {color: #208080;}
+.c.source-c .nu16 {color:#800080;}
+.c.source-c .nu17 {color:#800080;}
+.c.source-c .nu18 {color:#800080;}
+.c.source-c .nu19 {color:#800080;}
+.c.source-c .me1 {color: #202020;}
+.c.source-c .me2 {color: #202020;}
+.c.source-c .ln-xtra, .c.source-c li.ln-xtra, .c.source-c div.ln-xtra {background-color: #ffc;}
+.c.source-c span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Bare_Bones action-view skin-vector">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;" class="js-messagebox"></div>
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">Bare Bones</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">From OSDev Wiki</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					Jump to: <a href="http://wiki.osdev.org/Bare_Bones#mw-head">navigation</a>,
+					<a href="http://wiki.osdev.org/Bare_Bones#p-search">search</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="en" dir="ltr" class="mw-content-ltr"><table style="font-size:95%; line-height:1.5em; padding:0.25em; float:right; margin: 0 0 8px 15px; clear:right; border:1px solid #aaaaaa; background:#eee; text-align:center;;"><tbody><tr><th>Difficulty level</th></tr><tr><td><a href="http://wiki.osdev.org/File:Difficulty_1.png" class="image"><img alt="Difficulty 1.png" src="./Bare Bones - OSDev Wiki_files/Difficulty_1.png" width="46" height="14"></a><br>Beginner</td></tr></tbody></table><table style="font-size:95%; line-height:1.5em; padding:0.25em; float:right; margin: 0 0 8px 15px; clear: right; border:1px solid #aaaaaa; background:#eee; text-align:center; width:200px; ;"><tbody><tr><th style="background:#ffce7b; padding:0.3em; font-size:1.1em;"><a href="http://wiki.osdev.org/Kernels" title="Kernels" class="mw-redirect">Kernel Designs</a></th></tr><tr><th>Models</th></tr><tr><td><div>
+<p><a href="http://wiki.osdev.org/Monolithic_Kernel" title="Monolithic Kernel">Monolithic Kernel</a><br>
+<a href="http://wiki.osdev.org/Microkernel" title="Microkernel">Microkernel</a><br>
+<a href="http://wiki.osdev.org/Hybrid_Kernel" title="Hybrid Kernel">Hybrid Kernel</a><br>
+<a href="http://wiki.osdev.org/Exokernel" title="Exokernel">Exokernel</a><br>
+<a href="http://wiki.osdev.org/Nanokernel" title="Nanokernel" class="mw-redirect">Nano/Picokernel</a><br>
+<a href="http://wiki.osdev.org/Exokernel#Cache_Kernel" title="Exokernel">Cache Kernel</a><br>
+<a href="http://wiki.osdev.org/Exokernel#Virtualizing_Kernel" title="Exokernel">Virtualizing Kernel</a><br>
+<a href="http://wiki.osdev.org/Megalithic_Kernel" title="Megalithic Kernel">Megalithic Kernel</a><br>
+</p>
+</div></td></tr><tr><th>Other Concepts</th></tr><tr><td><div>
+<p><a href="http://wiki.osdev.org/Modular_Kernel" title="Modular Kernel">Modular Kernel</a><br>
+<a href="http://wiki.osdev.org/Higher_Half_Kernel" title="Higher Half Kernel">Higher Half Kernel</a><br>
+<a href="http://wiki.osdev.org/Creating_a_64-bit_kernel" title="Creating a 64-bit kernel">64-bit Kernel</a><br>
+</p>
+</div></td></tr></tbody></table>
+<p>In this tutorial we will write a simple kernel for <a href="http://wiki.osdev.org/IA32_Architecture_Family" title="IA32 Architecture Family">32-bit x86</a> and boot it. This is the first step in creating your own operating system. This tutorial serves as an example of how to create a minimal system, but not as an example of how to properly structure your project. These instructions are community reviewed and follow the current recommendations for good reasons. Beware of the many other tutorials available online as they do not follow modern advice and were written by the inexperienced.
+</p><p>You are about to begin development of a new operating system. Perhaps one day, your new operating system can be developed under itself. This is a process known as bootstrapping or going self-hosted. Today, we simply set up a system that can compile your new operating system from an existing operating system. This process is known as <a href="http://wiki.osdev.org/Why_do_I_need_a_Cross_Compiler%3F" title="Why do I need a Cross Compiler?">cross-compiling</a> and it is the first step in operating systems development.
+</p><p>This tutorial uses existing technology to get you started and straight into <a href="http://wiki.osdev.org/Kernel" title="Kernel">kernel</a> development, rather than developing your own <a href="http://wiki.osdev.org/Languages" title="Languages">programming language</a>, your own <a href="http://wiki.osdev.org/Compiler" title="Compiler">compiler</a>, and your own <a href="http://wiki.osdev.org/Bootloader" title="Bootloader">bootloader</a>. In this tutorial, we use:
+</p>
+<ul><li> The <a href="http://wiki.osdev.org/LD" title="LD">GNU Linker</a> from <a href="http://wiki.osdev.org/index.php?title=Binutils&amp;action=edit&amp;redlink=1" class="new" title="Binutils (page does not exist)">Binutils</a> to link our <a href="http://wiki.osdev.org/Object_File" title="Object File" class="mw-redirect">object files</a> into the final kernel.
+</li><li> The <a href="http://wiki.osdev.org/GAS" title="GAS">GNU Assembler</a> from <a href="http://wiki.osdev.org/index.php?title=Binutils&amp;action=edit&amp;redlink=1" class="new" title="Binutils (page does not exist)">Binutils</a> (or optionally <a href="http://wiki.osdev.org/NASM" title="NASM">NASM</a>) to <a href="http://wiki.osdev.org/Assembly" title="Assembly">assemble instructions</a> into object files containing machine code.
+</li><li> The <a href="http://wiki.osdev.org/GCC" title="GCC">GNU Compiler Collection</a> to compile our high level code into assembly.
+</li><li> The <a href="http://wiki.osdev.org/C" title="C">C</a> programming language (or optionally <a href="http://wiki.osdev.org/C%2B%2B" title="C++">C++</a>) to write the high level parts of our <a href="http://wiki.osdev.org/Kernel" title="Kernel">kernel</a>.
+</li><li> The <a href="http://wiki.osdev.org/GRUB" title="GRUB">GRUB</a> bootloader to <a href="http://wiki.osdev.org/Bootloader" title="Bootloader">bootload</a> our kernel using the <a href="http://wiki.osdev.org/Multiboot" title="Multiboot">Multiboot</a> boot protocol that loads us into 32-bit protected mode with <a href="http://wiki.osdev.org/Paging" title="Paging">paging</a> disabled.
+</li><li> The <a href="http://wiki.osdev.org/ELF" title="ELF">ELF</a> as the <a href="http://wiki.osdev.org/Executable_Formats" title="Executable Formats">executable format</a> that gives us control of where and how the kernel is loaded.
+</li></ul>
+<p>This article assumes you are using a Unix-like operating system such as Linux which supports operating systems development well. Windows users should be able to complete it from a <a href="http://wiki.osdev.org/MinGW" title="MinGW">MinGW</a> or <a href="http://wiki.osdev.org/Cygwin" title="Cygwin">Cygwin</a> environment.
+</p><p>Succeeding at operating systems development requires becoming an expert, having patience, and reading all the instructions very carefully. You need to read everything in this article before proceeding. If you run into problems, you need to reread the article even more carefully and then do it thrice more for good measure. If you still have issues, our community is experienced and will gladly help at the <a rel="nofollow" class="external text" href="http://forum.osdev.org/">forums</a> or on <a href="http://wiki.osdev.org/Chat" title="Chat">IRC</a>.
+</p><p><big><b>WAIT! Have you read <a href="http://wiki.osdev.org/Getting_Started" title="Getting Started">Getting Started</a>, <a href="http://wiki.osdev.org/Beginner_Mistakes" title="Beginner Mistakes">Beginner Mistakes</a>, and some of the related <a href="http://wiki.osdev.org/Category:OS_theory" title="Category:OS theory">OS theory</a>?</b></big>
+</p>
+<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>Contents</h2><span class="toctoggle">&nbsp;[<a href="http://wiki.osdev.org/Bare_Bones#" class="internal" id="togglelink">hide</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.osdev.org/Bare_Bones#Building_a_Cross-Compiler"><span class="tocnumber">1</span> <span class="toctext">Building a Cross-Compiler</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.osdev.org/Bare_Bones#Overview"><span class="tocnumber">2</span> <span class="toctext">Overview</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.osdev.org/Bare_Bones#Booting_the_Operating_System"><span class="tocnumber">3</span> <span class="toctext">Booting the Operating System</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="http://wiki.osdev.org/Bare_Bones#Bootstrap_Assembly"><span class="tocnumber">3.1</span> <span class="toctext">Bootstrap Assembly</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.osdev.org/Bare_Bones#Implementing_the_Kernel"><span class="tocnumber">4</span> <span class="toctext">Implementing the Kernel</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="http://wiki.osdev.org/Bare_Bones#Freestanding_and_Hosted_Environments"><span class="tocnumber">4.1</span> <span class="toctext">Freestanding and Hosted Environments</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="http://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C"><span class="tocnumber">4.2</span> <span class="toctext">Writing a kernel in C</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="http://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C.2B.2B"><span class="tocnumber">4.3</span> <span class="toctext">Writing a kernel in C++</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-9"><a href="http://wiki.osdev.org/Bare_Bones#Linking_the_Kernel"><span class="tocnumber">5</span> <span class="toctext">Linking the Kernel</span></a></li>
+<li class="toclevel-1 tocsection-10"><a href="http://wiki.osdev.org/Bare_Bones#Verifying_Multiboot"><span class="tocnumber">6</span> <span class="toctext">Verifying Multiboot</span></a></li>
+<li class="toclevel-1 tocsection-11"><a href="http://wiki.osdev.org/Bare_Bones#Booting_the_Kernel"><span class="tocnumber">7</span> <span class="toctext">Booting the Kernel</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="http://wiki.osdev.org/Bare_Bones#Building_a_bootable_cdrom_image"><span class="tocnumber">7.1</span> <span class="toctext">Building a bootable cdrom image</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="http://wiki.osdev.org/Bare_Bones#Testing_your_operating_system_.28QEMU.29"><span class="tocnumber">7.2</span> <span class="toctext">Testing your operating system (QEMU)</span></a></li>
+<li class="toclevel-2 tocsection-14"><a href="http://wiki.osdev.org/Bare_Bones#Testing_your_operating_system_.28Real_Hardware.29"><span class="tocnumber">7.3</span> <span class="toctext">Testing your operating system (Real Hardware)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-15"><a href="http://wiki.osdev.org/Bare_Bones#Moving_Forward"><span class="tocnumber">8</span> <span class="toctext">Moving Forward</span></a>
+<ul>
+<li class="toclevel-2 tocsection-16"><a href="http://wiki.osdev.org/Bare_Bones#Adding_Support_for_Newlines_to_Terminal_Driver"><span class="tocnumber">8.1</span> <span class="toctext">Adding Support for Newlines to Terminal Driver</span></a></li>
+<li class="toclevel-2 tocsection-17"><a href="http://wiki.osdev.org/Bare_Bones#Implementing_Terminal_Scrolling"><span class="tocnumber">8.2</span> <span class="toctext">Implementing Terminal Scrolling</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="http://wiki.osdev.org/Bare_Bones#Rendering_Colorful_ASCII_Art"><span class="tocnumber">8.3</span> <span class="toctext">Rendering Colorful ASCII Art</span></a></li>
+<li class="toclevel-2 tocsection-19"><a href="http://wiki.osdev.org/Bare_Bones#Calling_Global_Constructors"><span class="tocnumber">8.4</span> <span class="toctext">Calling Global Constructors</span></a></li>
+<li class="toclevel-2 tocsection-20"><a href="http://wiki.osdev.org/Bare_Bones#Meaty_Skeleton"><span class="tocnumber">8.5</span> <span class="toctext">Meaty Skeleton</span></a></li>
+<li class="toclevel-2 tocsection-21"><a href="http://wiki.osdev.org/Bare_Bones#Going_Further"><span class="tocnumber">8.6</span> <span class="toctext">Going Further</span></a></li>
+<li class="toclevel-2 tocsection-22"><a href="http://wiki.osdev.org/Bare_Bones#Bare_Bones_II"><span class="tocnumber">8.7</span> <span class="toctext">Bare Bones II</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-23"><a href="http://wiki.osdev.org/Bare_Bones#Frequently_Asked_Questions"><span class="tocnumber">9</span> <span class="toctext">Frequently Asked Questions</span></a></li>
+<li class="toclevel-1 tocsection-24"><a href="http://wiki.osdev.org/Bare_Bones#See_Also"><span class="tocnumber">10</span> <span class="toctext">See Also</span></a>
+<ul>
+<li class="toclevel-2 tocsection-25"><a href="http://wiki.osdev.org/Bare_Bones#Articles"><span class="tocnumber">10.1</span> <span class="toctext">Articles</span></a></li>
+<li class="toclevel-2 tocsection-26"><a href="http://wiki.osdev.org/Bare_Bones#External_Links"><span class="tocnumber">10.2</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></tbody></table>
+<h2> <span class="mw-headline" id="Building_a_Cross-Compiler"> Building a Cross-Compiler </span></h2>
+<dl><dd><i>Main article: <a href="http://wiki.osdev.org/GCC_Cross-Compiler" title="GCC Cross-Compiler">GCC Cross-Compiler</a>, <a href="http://wiki.osdev.org/Why_do_I_need_a_Cross_Compiler%3F" title="Why do I need a Cross Compiler?">Why do I need a Cross Compiler?</a></i>
+</dd></dl>
+<p>The first thing you should do is set up a <a href="http://wiki.osdev.org/GCC_Cross-Compiler" title="GCC Cross-Compiler">GCC Cross-Compiler</a> for <b>i686-elf</b>. You have not yet modified your compiler to know about the existence of your operating system, so we use a generic target called i686-elf, which provides you with a toolchain targeting the System V ABI. This setting is well tested and understood by the osdev community and will allow you to easily set up a bootable kernel using GRUB and Multiboot. (Note that if you are already using an ELF platform, such as Linux, you may already have a GCC that produces ELF programs. This is not suitable for osdev work, as this compiler will produce programs for Linux, and your operating system is <b>not</b> Linux, no matter how similar it is. You will certainly run into trouble if you don't use a cross-compiler.)
+</p><p>You will <i>not</i> be able to correctly compile your operating system without a cross-compiler.
+</p><p>You will <i>not</i> be able to correctly complete this tutorial with a x86_64-elf cross-compiler, as GRUB is only able to load 32-bit multiboot kernels. If this is your first operating system project, you should do a 32-bit kernel first. If you use a x86_64 compiler instead and somehow bypass the later sanity check, you will end up with a kernel that GRUB doesn't know how to boot.
+</p>
+<h2> <span class="mw-headline" id="Overview"> Overview </span></h2>
+<p>By now, you should have set up your <a href="http://wiki.osdev.org/GCC_Cross-Compiler" title="GCC Cross-Compiler">cross-compiler</a> for i686-elf (as described above). This tutorial provides a minimal solution for creating an operating system for x86. It doesn't serve as a recommend skeleton for project structure, but rather as an example of a minimal kernel. In this simple case, we just need three input files:
+</p>
+<ul><li> boot.s - kernel entry point that sets up the processor environment
+</li><li> kernel.c - your actual kernel routines
+</li><li> linker.ld - for linking the above files
+</li></ul>
+<h2> <span class="mw-headline" id="Booting_the_Operating_System"> Booting the Operating System </span></h2>
+<p>To start the operating system, an existing piece of software will be needed to load it. This is called the bootloader and in this tutorial we will be using <a href="http://wiki.osdev.org/GRUB" title="GRUB">GRUB</a>. Writing your own bootloader is an advanced subject, but it is commonly done. We'll later configure the bootloader, but the operating system needs to handle when the bootloader passes control to it. The kernel is passed a very minimal environment, in which the stack is not set up yet, virtual memory is not yet enabled, hardware is not initialized, and so on.
+</p><p>The first task we will deal with is how the bootloader starts the kernel. We are lucky because there exists a Multiboot Standard, which describes an easy interface between the bootloader and the operating system kernel. It works by putting a few magic values in some global variables (known as a multiboot header), which is searched for by the bootloader. When it sees these values, it recognizes the kernel as multiboot compatible and it knows how to load us, and it can even forward us important information such as memory maps, but we won't need that yet.
+</p><p>Since there is no stack yet and we need to make sure the global variables are set correctly, we will do this in assembly.
+</p>
+<h3> <span class="mw-headline" id="Bootstrap_Assembly"> Bootstrap Assembly </span></h3>
+<dl><dd><i>Alternatively, you can <a href="http://wiki.osdev.org/Bare_Bones_with_NASM" title="Bare Bones with NASM">use NASM as your assembler</a>.</i>
+</dd></dl>
+<p>We will now create a file called boot.s and discuss its contents. In this example, we are using the GNU assembler, which is part of the cross-compiler toolchain you built earlier. This assembler integrates very well with the rest of the GNU toolchain.
+</p><p>The very most important piece to create is the multiboot header, as it must be very early in the kernel binary, or the bootloader will fail to recognize us. 
+</p>
+<pre># Declare constants for the multiboot header.
+.set ALIGN,    1&lt;&lt;0             # align loaded modules on page boundaries
+.set MEMINFO,  1&lt;&lt;1             # provide memory map
+.set FLAGS,    ALIGN | MEMINFO  # this is the Multiboot 'flag' field
+.set MAGIC,    0x1BADB002       # 'magic number' lets bootloader find the header
+.set CHECKSUM, -(MAGIC + FLAGS) # checksum of above, to prove we are multiboot
+
+# Declare a multiboot header that marks the program as a kernel. These are magic
+# values that are documented in the multiboot standard. The bootloader will
+# search for this signature in the first 8 KiB of the kernel file, aligned at a
+# 32-bit boundary. The signature is in its own section so the header can be
+# forced to be within the first 8 KiB of the kernel file.
+.section .multiboot
+.align 4
+.long MAGIC
+.long FLAGS
+.long CHECKSUM
+
+# The multiboot standard does not define the value of the stack pointer register
+# (esp) and it is up to the kernel to provide a stack. This allocates room for a
+# small stack by creating a symbol at the bottom of it, then allocating 16384
+# bytes for it, and finally creating a symbol at the top. The stack grows
+# downwards on x86. The stack is in its own section so it can be marked nobits,
+# which means the kernel file is smaller because it does not contain an
+# uninitialized stack. The stack on x86 must be 16-byte aligned according to the
+# System V ABI standard and de-facto extensions. The compiler will assume the
+# stack is properly aligned and failure to align the stack will result in
+# undefined behavior.
+.section .bss
+.align 16
+stack_bottom:
+.skip 16384 # 16 KiB
+stack_top:
+
+# The linker script specifies _start as the entry point to the kernel and the
+# bootloader will jump to this position once the kernel has been loaded. It
+# doesn't make sense to return from this function as the bootloader is gone.
+.section .text
+.global _start
+.type _start, @function
+_start:
+	# The bootloader has loaded us into 32-bit protected mode on a x86
+	# machine. Interrupts are disabled. Paging is disabled. The processor
+	# state is as defined in the multiboot standard. The kernel has full
+	# control of the CPU. The kernel can only make use of hardware features
+	# and any code it provides as part of itself. There's no printf
+	# function, unless the kernel provides its own &lt;stdio.h&gt; header and a
+	# printf implementation. There are no security restrictions, no
+	# safeguards, no debugging mechanisms, only what the kernel provides
+	# itself. It has absolute and complete power over the
+	# machine.
+
+	# To set up a stack, we set the esp register to point to the top of our
+	# stack (as it grows downwards on x86 systems). This is necessarily done
+	# in assembly as languages such as C cannot function without a stack.
+	mov $stack_top,&nbsp;%esp
+
+	# This is a good place to initialize crucial processor state before the
+	# high-level kernel is entered. It's best to minimize the early
+	# environment where crucial features are offline. Note that the
+	# processor is not fully initialized yet: Features such as floating
+	# point instructions and instruction set extensions are not initialized
+	# yet. The GDT should be loaded here. Paging should be enabled here.
+	# C++ features such as global constructors and exceptions will require
+	# runtime support to work as well.
+
+	# Enter the high-level kernel. The ABI requires the stack is 16-byte
+	# aligned at the time of the call instruction (which afterwards pushes
+	# the return pointer of size 4 bytes). The stack was originally 16-byte
+	# aligned above and we've since pushed a multiple of 16 bytes to the
+	# stack since (pushed 0 bytes so far) and the alignment is thus
+	# preserved and the call is well defined.
+	call kernel_main
+
+	# If the system has nothing more to do, put the computer into an
+	# infinite loop. To do that:
+	# 1) Disable interrupts with cli (clear interrupt enable in eflags).
+	#    They are already disabled by the bootloader, so this is not needed.
+	#    Mind that you might later enable interrupts and return from
+	#    kernel_main (which is sort of nonsensical to do).
+	# 2) Wait for the next interrupt to arrive with hlt (halt instruction).
+	#    Since they are disabled, this will lock up the computer.
+	# 3) Jump to the hlt instruction if it ever wakes up due to a
+	#    non-maskable interrupt occurring or due to system management mode.
+	cli
+1:	hlt
+	jmp 1b
+
+# Set the size of the _start symbol to the current location '.' minus its start.
+# This is useful when debugging or when you implement call tracing.
+.size _start, . - _start
+</pre>
+<p>You can then assemble boot.s using:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">i686-elf-as boot.s <span class="re5">-o</span> boot.o</pre></div></div>
+<h2> <span class="mw-headline" id="Implementing_the_Kernel"> Implementing the Kernel </span></h2>
+<p>So far we have written the bootstrap assembly stub that sets up the processor such that high level languages such as C can be used. It is also possible to use other languages such as C++.
+</p>
+<h3> <span class="mw-headline" id="Freestanding_and_Hosted_Environments"> Freestanding and Hosted Environments </span></h3>
+<p>If you have done C or C++ programming in user-space, you have used a so-called Hosted Environment. Hosted means that there is a C standard library and other useful runtime features. Alternatively, there is the Freestanding version, which is what we are using here. Freestanding means that there is no C standard library, only what we provide ourselves. However, some header files are actually not part of the C standard library, but rather the compiler. These remain available even in freestanding C source code. In this case we use &lt;stdbool.h&gt; to get the bool datatype, &lt;stddef.h&gt; to get size_t and NULL, and &lt;stdint.h&gt; to get the intx_t and uintx_t datatypes which are invaluable for operating systems development, where you need to make sure that the variable is of an exact size (if we used a short instead of uint16_t and the size of short changed, our VGA driver here would break!). Additionally you can access the &lt;float.h&gt;, &lt;iso646.h&gt;, &lt;limits.h&gt;, and &lt;stdarg.h&gt; headers, as they are also freestanding. GCC actually ships a few more headers, but these are special purpose.
+</p>
+<h3> <span class="mw-headline" id="Writing_a_kernel_in_C"> Writing a kernel in C </span></h3>
+<p>The following shows how to create a simple kernel in C. This kernel uses the VGA text mode buffer (located at 0xB8000) as the output device. It sets up a simple driver that remembers the location of the next character in this buffer and provides a primitive for adding a new character. Notably, there is no support for line breaks ('\n') (and writing that character will show some VGA-specific character instead) and no support for scrolling when the screen is filled up. Adding this will be your first task. Please take a few moments to understand the code.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="coMULTI">/* Surely you will remove the processor conditionals and this comment
+   appropriately depending on whether or not you use C++. */</span>
+<span class="co2">#if&nbsp;!defined(__cplusplus)</span>
+<span class="co2">#include &lt;stdbool.h&gt; /* C doesn't have booleans by default. */</span>
+<span class="co2">#endif</span>
+<span class="co2">#include &lt;stddef.h&gt;</span>
+<span class="co2">#include &lt;stdint.h&gt;</span>
+&nbsp;
+<span class="coMULTI">/* Check if the compiler thinks we are targeting the wrong operating system. */</span>
+<span class="co2">#if defined(__linux__)</span>
+<span class="co2">#error "You are not using a cross-compiler, you will most certainly run into trouble"</span>
+<span class="co2">#endif</span>
+&nbsp;
+<span class="coMULTI">/* This tutorial will only work for the 32-bit ix86 targets. */</span>
+<span class="co2">#if&nbsp;!defined(__i386__)</span>
+<span class="co2">#error "This tutorial needs to be compiled with a ix86-elf compiler"</span>
+<span class="co2">#endif</span>
+&nbsp;
+<span class="coMULTI">/* Hardware text mode color constants. */</span>
+<span class="kw2">enum</span> vga_color <span class="br0">{</span>
+	VGA_COLOR_BLACK <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">,</span>
+	VGA_COLOR_BLUE <span class="sy0">=</span> <span class="nu0">1</span><span class="sy0">,</span>
+	VGA_COLOR_GREEN <span class="sy0">=</span> <span class="nu0">2</span><span class="sy0">,</span>
+	VGA_COLOR_CYAN <span class="sy0">=</span> <span class="nu0">3</span><span class="sy0">,</span>
+	VGA_COLOR_RED <span class="sy0">=</span> <span class="nu0">4</span><span class="sy0">,</span>
+	VGA_COLOR_MAGENTA <span class="sy0">=</span> <span class="nu0">5</span><span class="sy0">,</span>
+	VGA_COLOR_BROWN <span class="sy0">=</span> <span class="nu0">6</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_GREY <span class="sy0">=</span> <span class="nu0">7</span><span class="sy0">,</span>
+	VGA_COLOR_DARK_GREY <span class="sy0">=</span> <span class="nu0">8</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_BLUE <span class="sy0">=</span> <span class="nu0">9</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_GREEN <span class="sy0">=</span> <span class="nu0">10</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_CYAN <span class="sy0">=</span> <span class="nu0">11</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_RED <span class="sy0">=</span> <span class="nu0">12</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_MAGENTA <span class="sy0">=</span> <span class="nu0">13</span><span class="sy0">,</span>
+	VGA_COLOR_LIGHT_BROWN <span class="sy0">=</span> <span class="nu0">14</span><span class="sy0">,</span>
+	VGA_COLOR_WHITE <span class="sy0">=</span> <span class="nu0">15</span><span class="sy0">,</span>
+<span class="br0">}</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw4">static</span> <span class="kw2">inline</span> <span class="kw4">uint8_t</span> vga_entry_color<span class="br0">(</span><span class="kw2">enum</span> vga_color fg<span class="sy0">,</span> <span class="kw2">enum</span> vga_color bg<span class="br0">)</span> <span class="br0">{</span>
+	<span class="kw1">return</span> fg <span class="sy0">|</span> bg <span class="sy0">&lt;&lt;</span> <span class="nu0">4</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">static</span> <span class="kw2">inline</span> <span class="kw4">uint16_t</span> vga_entry<span class="br0">(</span><span class="kw4">unsigned</span> <span class="kw4">char</span> uc<span class="sy0">,</span> <span class="kw4">uint8_t</span> color<span class="br0">)</span> <span class="br0">{</span>
+	<span class="kw1">return</span> <span class="br0">(</span><span class="kw4">uint16_t</span><span class="br0">)</span> uc <span class="sy0">|</span> <span class="br0">(</span><span class="kw4">uint16_t</span><span class="br0">)</span> color <span class="sy0">&lt;&lt;</span> <span class="nu0">8</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">size_t</span> <span class="kw3">strlen</span><span class="br0">(</span><span class="kw4">const</span> <span class="kw4">char</span><span class="sy0">*</span> str<span class="br0">)</span> <span class="br0">{</span>
+	<span class="kw4">size_t</span> len <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+	<span class="kw1">while</span> <span class="br0">(</span>str<span class="br0">[</span>len<span class="br0">]</span><span class="br0">)</span>
+		len<span class="sy0">++;</span>
+	<span class="kw1">return</span> len<span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">static</span> <span class="kw4">const</span> <span class="kw4">size_t</span> VGA_WIDTH <span class="sy0">=</span> <span class="nu0">80</span><span class="sy0">;</span>
+<span class="kw4">static</span> <span class="kw4">const</span> <span class="kw4">size_t</span> VGA_HEIGHT <span class="sy0">=</span> <span class="nu0">25</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw4">size_t</span> terminal_row<span class="sy0">;</span>
+<span class="kw4">size_t</span> terminal_column<span class="sy0">;</span>
+<span class="kw4">uint8_t</span> terminal_color<span class="sy0">;</span>
+<span class="kw4">uint16_t</span><span class="sy0">*</span> terminal_buffer<span class="sy0">;</span>
+&nbsp;
+<span class="kw4">void</span> terminal_initialize<span class="br0">(</span><span class="kw4">void</span><span class="br0">)</span> <span class="br0">{</span>
+	terminal_row <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+	terminal_column <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+	terminal_color <span class="sy0">=</span> vga_entry_color<span class="br0">(</span>VGA_COLOR_LIGHT_GREY<span class="sy0">,</span> VGA_COLOR_BLACK<span class="br0">)</span><span class="sy0">;</span>
+	terminal_buffer <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint16_t</span><span class="sy0">*</span><span class="br0">)</span> <span class="nu12">0xB8000</span><span class="sy0">;</span>
+	<span class="kw1">for</span> <span class="br0">(</span><span class="kw4">size_t</span> y <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> y <span class="sy0">&lt;</span> VGA_HEIGHT<span class="sy0">;</span> y<span class="sy0">++</span><span class="br0">)</span> <span class="br0">{</span>
+		<span class="kw1">for</span> <span class="br0">(</span><span class="kw4">size_t</span> x <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> x <span class="sy0">&lt;</span> VGA_WIDTH<span class="sy0">;</span> x<span class="sy0">++</span><span class="br0">)</span> <span class="br0">{</span>
+			<span class="kw4">const</span> <span class="kw4">size_t</span> index <span class="sy0">=</span> y <span class="sy0">*</span> VGA_WIDTH <span class="sy0">+</span> x<span class="sy0">;</span>
+			terminal_buffer<span class="br0">[</span>index<span class="br0">]</span> <span class="sy0">=</span> vga_entry<span class="br0">(</span><span class="st0">' '</span><span class="sy0">,</span> terminal_color<span class="br0">)</span><span class="sy0">;</span>
+		<span class="br0">}</span>
+	<span class="br0">}</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">void</span> terminal_setcolor<span class="br0">(</span><span class="kw4">uint8_t</span> color<span class="br0">)</span> <span class="br0">{</span>
+	terminal_color <span class="sy0">=</span> color<span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">void</span> terminal_putentryat<span class="br0">(</span><span class="kw4">char</span> c<span class="sy0">,</span> <span class="kw4">uint8_t</span> color<span class="sy0">,</span> <span class="kw4">size_t</span> x<span class="sy0">,</span> <span class="kw4">size_t</span> y<span class="br0">)</span> <span class="br0">{</span>
+	<span class="kw4">const</span> <span class="kw4">size_t</span> index <span class="sy0">=</span> y <span class="sy0">*</span> VGA_WIDTH <span class="sy0">+</span> x<span class="sy0">;</span>
+	terminal_buffer<span class="br0">[</span>index<span class="br0">]</span> <span class="sy0">=</span> vga_entry<span class="br0">(</span>c<span class="sy0">,</span> color<span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">void</span> terminal_putchar<span class="br0">(</span><span class="kw4">char</span> c<span class="br0">)</span> <span class="br0">{</span>
+	terminal_putentryat<span class="br0">(</span>c<span class="sy0">,</span> terminal_color<span class="sy0">,</span> terminal_column<span class="sy0">,</span> terminal_row<span class="br0">)</span><span class="sy0">;</span>
+	<span class="kw1">if</span> <span class="br0">(</span><span class="sy0">++</span>terminal_column <span class="sy0">==</span> VGA_WIDTH<span class="br0">)</span> <span class="br0">{</span>
+		terminal_column <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+		<span class="kw1">if</span> <span class="br0">(</span><span class="sy0">++</span>terminal_row <span class="sy0">==</span> VGA_HEIGHT<span class="br0">)</span>
+			terminal_row <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+	<span class="br0">}</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">void</span> terminal_write<span class="br0">(</span><span class="kw4">const</span> <span class="kw4">char</span><span class="sy0">*</span> data<span class="sy0">,</span> <span class="kw4">size_t</span> size<span class="br0">)</span> <span class="br0">{</span>
+	<span class="kw1">for</span> <span class="br0">(</span><span class="kw4">size_t</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> size<span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span>
+		terminal_putchar<span class="br0">(</span>data<span class="br0">[</span>i<span class="br0">]</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw4">void</span> terminal_writestring<span class="br0">(</span><span class="kw4">const</span> <span class="kw4">char</span><span class="sy0">*</span> data<span class="br0">)</span> <span class="br0">{</span>
+	terminal_write<span class="br0">(</span>data<span class="sy0">,</span> <span class="kw3">strlen</span><span class="br0">(</span>data<span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="co2">#if defined(__cplusplus)</span>
+<span class="kw2">extern</span> <span class="st0">"C"</span> <span class="coMULTI">/* Use C linkage for kernel_main. */</span>
+<span class="co2">#endif</span>
+<span class="kw4">void</span> kernel_main<span class="br0">(</span><span class="kw4">void</span><span class="br0">)</span> <span class="br0">{</span>
+	<span class="coMULTI">/* Initialize terminal interface */</span>
+	terminal_initialize<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+	<span class="coMULTI">/* Newline support is left as an exercise. */</span>
+	terminal_writestring<span class="br0">(</span><span class="st0">"Hello, kernel World!<span class="es1">\n</span>"</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span></pre></div></div>
+<p>Notice how we wish to use the common C function <tt>strlen</tt>, but this function is part of the C standard library that we don't have available. Instead, we rely on the freestanding header &lt;stddef.h&gt; to provide <tt>size_t</tt> and we simply declare our own implementation of <tt>strlen</tt>. You will have to do this for every function you wish to use (as the freestanding headers only provide macros and data types).
+</p><p>Compile using:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">i686-elf-gcc <span class="re5">-c</span> kernel.c <span class="re5">-o</span> kernel.o <span class="re5">-std</span>=gnu99 <span class="re5">-ffreestanding</span> <span class="re5">-O2</span> <span class="re5">-Wall</span> <span class="re5">-Wextra</span></pre></div></div>
+<p>Note that the above code uses a few extensions and hence we build as the GNU version of C99.
+</p>
+<h3> <span class="mw-headline" id="Writing_a_kernel_in_C.2B.2B"> Writing a kernel in C++ </span></h3>
+<p>Writing a kernel in <a href="http://wiki.osdev.org/C%2B%2B" title="C++">C++</a> is easy. Note that not all features from the language is available. For instance, exception support requires special runtime support and so does memory allocation. To write a kernel in C++, simply use the code above (which also happens to be legal C++) and save it in a kernel.c++ (or what your favorite C++ filename extension is). Notice how the kernel_main function has to be declared with C linkage, as otherwise the compiler would include type information in the assembly name (name mangling). This complicates calling the function from our above assembly stub and we therefore use C linkage, where the symbol name is the same as the name of the function (with no additional type information).
+</p><p>You can compile the file kernel.c++ using:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">i686-elf-g++ <span class="re5">-c</span> kernel.c++ <span class="re5">-o</span> kernel.o <span class="re5">-ffreestanding</span> <span class="re5">-O2</span> <span class="re5">-Wall</span> <span class="re5">-Wextra</span> <span class="re5">-fno-exceptions</span> <span class="re5">-fno-rtti</span></pre></div></div>
+<p>Note that you must have also built a cross C++ compiler for this work.
+</p>
+<h2> <span class="mw-headline" id="Linking_the_Kernel"> Linking the Kernel </span></h2>
+<p>We can now assemble boot.s and compile kernel.c. This produces two object files that each contain part of the kernel. To create the full and final kernel we will have to link these object files into the final kernel program, usable by the bootloader. When developing user-space programs, your toolchain ships with default scripts for linking such programs. However, these are unsuitable for kernel development and we need to provide our own customized linker script. Save the following in linker.ld:
+</p>
+<pre>/* The bootloader will look at this image and start execution at the symbol
+   designated as the entry point. */
+ENTRY(_start)
+
+/* Tell where the various sections of the object files will be put in the final
+   kernel image. */
+SECTIONS
+{
+	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
+	   loaded at by the bootloader. */
+	. = 1M;
+
+	/* First put the multiboot header, as it is required to be put very early
+	   early in the image or the bootloader won't recognize the file format.
+	   Next we'll put the .text section. */
+	.text BLOCK(4K)&nbsp;: ALIGN(4K)
+	{
+		*(.multiboot)
+		*(.text)
+	}
+
+	/* Read-only data. */
+	.rodata BLOCK(4K)&nbsp;: ALIGN(4K)
+	{
+		*(.rodata)
+	}
+
+	/* Read-write data (initialized) */
+	.data BLOCK(4K)&nbsp;: ALIGN(4K)
+	{
+		*(.data)
+	}
+
+	/* Read-write data (uninitialized) and stack */
+	.bss BLOCK(4K)&nbsp;: ALIGN(4K)
+	{
+		*(COMMON)
+		*(.bss)
+	}
+
+	/* The compiler may produce other sections, by default it will put them in
+	   a segment with the same name. Simply add stuff here as needed. */
+}
+</pre>
+<p>With these components you can now actually build the final kernel. We use the compiler as the linker as it allows it greater control over the link process. Note that if your kernel is written in C++, you should use the C++ compiler instead. 
+</p><p>You can then link your kernel using:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">i686-elf-gcc <span class="re5">-T</span> linker.ld <span class="re5">-o</span> myos.bin <span class="re5">-ffreestanding</span> <span class="re5">-O2</span> <span class="re5">-nostdlib</span> boot.o kernel.o <span class="re5">-lgcc</span></pre></div></div>
+<p>Note: Some tutorials suggest linking with i686-elf-ld rather than the compiler, however this prevents the compiler from performing various tasks during linking.
+</p><p>The file myos.bin is now your kernel (all other files are no longer needed). Note that we are linking against <a href="http://wiki.osdev.org/Libgcc" title="Libgcc">libgcc</a>, which implements various runtime routines that your cross-compiler depends on. Leaving it out will give you problems in the future. If you did not build and install <a href="http://wiki.osdev.org/Libgcc" title="Libgcc">libgcc</a> as part of your cross-compiler, you should go back now and build a cross-compiler with <a href="http://wiki.osdev.org/Libgcc" title="Libgcc">libgcc</a>. The compiler depends on this library and will use it regardless of whether you provide it or not.
+</p>
+<h2> <span class="mw-headline" id="Verifying_Multiboot"> Verifying Multiboot </span></h2>
+<p>If you have <a href="http://wiki.osdev.org/GRUB" title="GRUB">GRUB</a> installed, you can check whether a file has a valid <a href="http://wiki.osdev.org/Multiboot" title="Multiboot">Multiboot</a> version 1 header, which is the case for our kernel. It's important that the Multiboot header is within the first 8 KiB of the actual program file at 4 byte alignment. This can potentially break later if you make a mistake in the boot assembly, the linker script, or anything else that might go wrong. If the header isn't valid, GRUB will give an error that it can't find a Multiboot header when you try to boot it. This code fragment will help you diagnose such cases:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">grub-file <span class="re5">--is-x86-multiboot</span> myos.bin</pre></div></div>
+<p><tt>grub-file</tt> is quiet but will exit 0 (successfully) if it is a valid multiboot kernel and exit 1 (unsuccessfully) otherwise. You can type <tt>echo $?</tt> in your shell immediately afterwards to see the exit status. You can add this grub-file check to your build scripts as a sanity test to catch the problem at compile time. Multiboot version 2 can be checked with the <tt>--is-x86-multiboot2</tt> option instead. If you invoke the <tt>grub-file</tt> command manually in a shell, it is convenient to wrap it in a conditional to easily see the status. This command should work now:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1"><span class="kw1">if</span> grub-file <span class="re5">--is-x86-multiboot</span> myos.bin; <span class="kw1">then</span>
+  <span class="kw3">echo</span> multiboot confirmed
+<span class="kw1">else</span>
+  <span class="kw3">echo</span> the <span class="kw2">file</span> is not multiboot
+<span class="kw1">fi</span></pre></div></div>
+<h2> <span class="mw-headline" id="Booting_the_Kernel"> Booting the Kernel </span></h2>
+<p>In a few moments, you will see your kernel in action.
+</p>
+<h3> <span class="mw-headline" id="Building_a_bootable_cdrom_image"> Building a bootable cdrom image </span></h3>
+<p>You can easily create a bootable CD-ROM image containing the GRUB bootloader and your kernel using the program <tt>grub-mkrescue</tt>. You may need to install the GRUB utility programs and the program <tt>xorriso</tt> (version 0.5.6 or higher). First you should create a file called grub.cfg containing the contents:
+</p>
+<pre>menuentry "myos" {
+	multiboot /boot/myos.bin
+}
+</pre>
+<p>Note that the braces must be placed as shown here. You can now create a bootable image of your operating system by typing these commands:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1"><span class="kw2">mkdir</span> <span class="re5">-p</span> isodir<span class="sy0">/</span>boot<span class="sy0">/</span>grub
+<span class="kw2">cp</span> myos.bin isodir<span class="sy0">/</span>boot<span class="sy0">/</span>myos.bin
+<span class="kw2">cp</span> grub.cfg isodir<span class="sy0">/</span>boot<span class="sy0">/</span>grub<span class="sy0">/</span>grub.cfg
+grub-mkrescue <span class="re5">-o</span> myos.iso isodir</pre></div></div>
+<p>Congratulations! You have now created a file called myos.iso that contains your Hello World operating system. If you don't have the program <tt>grub-mkrescue</tt> installed, now is a good time to install GRUB. It should already be installed on Linux systems. Windows users will likely want to use a Cygwin variant if no native grub-mkrescue program is available.
+</p><p><b>Warning:</b> GNU GRUB, the bootloader used by <tt>grub-mkrescue</tt>, is licensed under the GNU General Public License. Your iso file contains copyrighted material under that license and redistributing it in violation of the GPL constitutes copyright infringement. The GPL requires you publish the source code corresponding to the bootloader. You need to get the exact source package corresponding to the GRUB package you have installed from your distribution, at the time <tt>grub-mkrescue</tt> is invoked (as distro packages are occasionally updated). You then need to publish that source code along with your ISO to satisfy the GPL. Alternative, you can build GRUB from source code yourself. Clone the latest GRUB git from savannah (do not use their last release from 2012, it's severely out of date). Run autogen.sh, ./configure and make dist. That makes a GRUB tarball. Extract it somewhere, then build GRUB from it, and install it in a isolated prefix. Add that to your PATH and ensure its <tt>grub-mkrescue</tt> program is used to produce your iso. Then publish the GRUB tarball of your own making along with your OS release. You're not required to publish the source code of your OS at all, only the code for the bootloader that's inside the iso.
+</p>
+<h3> <span class="mw-headline" id="Testing_your_operating_system_.28QEMU.29"> Testing your operating system (QEMU) </span></h3>
+<p>Virtual Machines are very useful for development operating systems, as they allow you to quickly test your code and have access to the source code during the execution. Otherwise, you would be in for an endless cycle of reboots that would only annoy you. They start very quickly, especially combined with small operating systems such as ours.
+</p><p>In this tutorial, we will be using QEMU. You can also use other virtual machines if you please. Simply adding the ISO to the CD drive of an empty virtual machine will do the trick.
+</p><p>Install QEMU from your repositories, and then use the following command to start your new operating system.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">qemu-system-i386 <span class="re5">-cdrom</span> myos.iso</pre></div></div>
+<p>This should start a new virtual machine containing only your ISO as a cdrom. If all goes well, you will be met with a menu provided by the bootloader. Simply select myos and if all goes well, you should see the happy words "Hello, Kernel World!" followed by some mysterious character.
+</p><p>Additionally, QEMU supports booting multiboot kernels directly without bootable medium:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1">qemu-system-i386 <span class="re5">-kernel</span> myos.bin</pre></div></div>
+<h3> <span class="mw-headline" id="Testing_your_operating_system_.28Real_Hardware.29"> Testing your operating system (Real Hardware) </span></h3>
+<p>The program grub-mkrescue is nice because it makes a bootable ISO that works on both real computers and virtual machines. You can then build an ISO and use it everywhere. To boot your kernel on your local computer you can install myos.bin to your /boot directory and configure your bootloader appropriately.
+</p><p>Or alternatively, you can burn it to an USB stick (erasing all data on it!). To do so, simply find out the name of the USB block device, in my case /dev/sdb but this may vary, and using the wrong block device (your harddisk, gasp!) may be disastrous. If you are using Linux and /dev/sdx is your block name, simply:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="bash source-bash"><pre class="de1"><span class="kw2">sudo</span> <span class="kw2">dd</span> <span class="re2">if</span>=myos.iso <span class="re2">of</span>=<span class="sy0">/</span>dev<span class="sy0">/</span>sdx <span class="sy0">&amp;&amp;</span> <span class="kw2">sync</span></pre></div></div>
+<p>Your operating system will then be installed on your USB stick. If you configure your BIOS to boot from USB first, you can insert the USB stick and your computer should start your operating system.
+</p><p>Alternatively, the .iso is a normal cdrom image. Simply burn it to a CD or DVD if you feel like wasting one of those on a few kilobytes large kernel.
+</p>
+<h2> <span class="mw-headline" id="Moving_Forward"> Moving Forward </span></h2>
+<p>Now that you can run your new shiny operating system, congratulations! Of course, depending on how much this interests you, it may just be the beginning. Here's a few things to get going.
+</p>
+<h3> <span class="mw-headline" id="Adding_Support_for_Newlines_to_Terminal_Driver"> Adding Support for Newlines to Terminal Driver </span></h3>
+<p>The current terminal driver does not handle newlines. The VGA text mode font stores another character at the location, since newlines are never meant to be actually rendered: they are logical entities. Rather, in terminal_putchar check if c == '\n' and increment terminal_row and reset terminal_column.
+</p>
+<h3> <span class="mw-headline" id="Implementing_Terminal_Scrolling"> Implementing Terminal Scrolling </span></h3>
+<p>In case the terminal is filled up, it will just go back to the top of the screen. This is unacceptable for normal use. Instead, it should move all rows up one row and discard the upper most, and leave a blank row at the bottom ready to be filled up with characters. Implement this.
+</p>
+<h3> <span class="mw-headline" id="Rendering_Colorful_ASCII_Art"> Rendering Colorful ASCII Art </span></h3>
+<p>Use the existing terminal driver to render some pretty stuff in all the glorious 16 colors you have available. Note that only 8 colors may be available for the background color, as the uppermost bit in the entries by default means something other than background color. You'll need a real VGA driver to fix this.
+</p>
+<h3> <span class="mw-headline" id="Calling_Global_Constructors"> Calling Global Constructors </span></h3>
+<dl><dd><i>Main article:</i> <a href="http://wiki.osdev.org/Calling_Global_Constructors" title="Calling Global Constructors">Calling Global Constructors</a>
+</dd></dl>
+<p>This tutorial showed a small example of how to create a minimal environment for C and C++ kernels. Unfortunately, you don't have everything set up yet. For instance, C++ with global objects will not have their constructors called because you never do it. The compiler uses a special mechanism for performing tasks at program initialization time through the <tt>crt*.o</tt> objects, which may be valuable even for C programmers. If you combine the <tt>crt*.o</tt> files correctly, you will create an <tt>_init</tt> function that invokes all the program initialization tasks. Your boot.o object file can then invoke <tt>_init</tt> before calling <tt>kernel_main</tt>.
+</p>
+<h3> <span class="mw-headline" id="Meaty_Skeleton"> Meaty Skeleton </span></h3>
+<dl><dd><i>Main article:</i> <a href="http://wiki.osdev.org/Meaty_Skeleton" title="Meaty Skeleton">Meaty Skeleton</a>
+</dd></dl>
+<p>This tutorial is meant as a minimal example to give impatient beginners a quick hello world operating system. It is deliberately minimal and doesn't show the best practices on how to organize your operating system. The Meaty Skeleton tutorial shows an example of how to organize a minimal operating system with a kernel, room for a standard library to grow, and prepared for a user-space to appear.
+</p>
+<h3> <span class="mw-headline" id="Going_Further"> Going Further </span></h3>
+<dl><dd><i>Main article:</i> <a href="http://wiki.osdev.org/Going_Further_on_x86" title="Going Further on x86">Going Further on x86</a>
+</dd></dl>
+<p>This guide is meant as an overview of what to do, so you have a kernel ready for more features, without actually redesigning it radically when adding them.
+</p>
+<h3> <span class="mw-headline" id="Bare_Bones_II"> Bare Bones <tt>II</tt> </span></h3>
+<p>Make your operating system self-hosting and then complete Bare Bones under your own operating system while following all the instructions. This is a five star exercise and you may need a couple of years to solve it.
+</p>
+<h2> <span class="mw-headline" id="Frequently_Asked_Questions"> Frequently Asked Questions </span></h2>
+<dl><dt>Why the Multiboot header? Wouldn't a pure <a href="http://wiki.osdev.org/ELF" title="ELF">ELF</a> file be loadable by GRUB anyway?
+</dt><dd>GRUB is capable of loading a variety of formats. However, in this tutorial we are creating a Multiboot compliant kernel that could be loaded by any other compliant bootloader. To achieve this, the multiboot header is mandatory.
+</dd></dl>
+<dl><dt>Is the AOUT kludge required for my kernel?
+</dt><dd>The AOUT kludge is not necessary for kernels in ELF format: a multiboot-compliant loader will recognize an ELF executable as such and use the program header to load things in their proper place. You can provide an AOUT kludge with your ELF kernel, in which case the headers of the ELF file are ignored. With any other format, such as AOUT, COFF or PE kernels, the AOUT kludge it is required, however.
+</dd></dl>
+<dl><dt>Can the Multiboot header be anywhere in the kernel file, or does it have to be in a specific offset?
+</dt><dd>The Multiboot header must be in the first 8kb of the kernel file and must be aligned to a 32-bit (4 byte) boundary for GRUB to find it. You can ensure that this is the case by putting the header in its own source code file and passing that as the first object file to LD.
+</dd></dl>
+<dl><dt>Will GRUB wipe the BSS section before loading the kernel?
+</dt><dd>Yes. For ELF kernels, the .bss section is automatically identified and cleared (despite the Multiboot specification being a bit vague about it). For other formats, if you ask it politely to do so, that is if you use the 'address override' information from the Multiboot header (flag #16) and give a non-zero value to the bss_end_addr field. Note that using "address override" with an ELF kernel will disable the default behavior and do what is described by the "address override" header instead.
+</dd></dl>
+<dl><dt>What is the state of registers/memory/etc. when GRUB calls my kernel?
+</dt><dd>GRUB is an implementation of the Multiboot specification. Anything not specified there is "undefined behavior", which should ring a bell (not only) with C/C++ programmers... Better check the Machine State section of Multiboot documentation, and assume nothing else.
+</dd></dl>
+<dl><dt>I still get <tt>Error 13: Invalid or unsupported executable format from GRUB</tt>...
+</dt><dd>Chances are the Multiboot header is missing from the final executable, or it is not at the right location.
+</dd><dd>If you are using some other format than ELF (such as PE), you should specify the AOUT kludge in the Multiboot header. The <tt>grub-file</tt> program describe aboveand "objdump -h" should give you more hints about what is going on.
+</dd><dd>It may also happen if you use an ELF object file instead of an executable (e.g. you have an ELF file with unresolved symbols or unfixable relocations). Try to link your ELF file to a binary executable to get more accurate error messages.
+</dd><dd>A common problem when your kernel size increases, is that the Multiboot header does no longer appear at the start of the output binary. The common solutions is to put the Multiboot header in a separate section and make sure that section is first in the output binary, or to include the Multiboot header itself in the linker script.
+</dd></dl>
+<dl><dt>I get <tt>Boot failed: Could not read from CD-ROM (code 0009)</tt> when trying to boot the iso image in QEMU
+</dt><dd>If your development system is booted from EFI it may be that you don't have the PC-BIOS version of the grub binaries installed anywhere.  If you install them then grub-mkrescue will by default produce a hybrid ISO that will work in QEMU.  On Ubuntu this can be achieved with: <b>apt-get install grub-pc-bin</b>.
+</dd></dl>
+<h2> <span class="mw-headline" id="See_Also"> See Also </span></h2>
+<h3> <span class="mw-headline" id="Articles"> Articles </span></h3>
+<ul><li> <a href="http://wiki.osdev.org/Books" title="Books">Books</a>
+</li></ul>
+<h3> <span class="mw-headline" id="External_Links"> External Links </span></h3>
+<ul><li> <a rel="nofollow" class="external text" href="https://www.gnu.org/software/grub/manual/multiboot/multiboot.html">Multiboot Specification</a>
+</li><li> <a rel="nofollow" class="external text" href="http://pubs.opengroup.org/onlinepubs/9699919799//">The POSIX standard</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 739/1000000
+Post-expand include size: 2682/2097152 bytes
+Template argument size: 2303/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:1741-0!*!0!!en!2!* and timestamp 20170221020426 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				Retrieved from "<a href="http://wiki.osdev.org/index.php?title=Bare_Bones&amp;oldid=20362">http://wiki.osdev.org/index.php?title=Bare_Bones&amp;oldid=20362</a>"				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks"><a href="http://wiki.osdev.org/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="http://wiki.osdev.org/Category:Level_1_Tutorials" title="Category:Level 1 Tutorials">Level 1 Tutorials</a></li><li><a href="http://wiki.osdev.org/Category:Bare_bones_tutorials" title="Category:Bare bones tutorials">Bare bones tutorials</a></li><li><a href="http://wiki.osdev.org/Category:C" title="Category:C">C</a></li><li><a href="http://wiki.osdev.org/Category:C%2B%2B" title="Category:C++">C++</a></li></ul></div></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>Personal tools</h5>
+	<ul>
+		<li id="pt-login"><a href="http://wiki.osdev.org/index.php?title=Special:UserLogin&amp;returnto=Bare_Bones" title="You are encouraged to log in; however, it is not mandatory [alt-o]" accesskey="o">Log in</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>Namespaces</h5>
+	<ul>
+					<li id="ca-nstab-main" class="selected"><span><a href="http://wiki.osdev.org/Bare_Bones" title="View the content page [alt-c]" accesskey="c">Page</a></span></li>
+					<li id="ca-talk"><span><a href="http://wiki.osdev.org/Talk:Bare_Bones" title="Discussion about the content page [alt-t]" accesskey="t">Discussion</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>Variants</span><a href="http://wiki.osdev.org/Bare_Bones#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-views" class="vectorTabs">
+	<h5>Views</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="http://wiki.osdev.org/Bare_Bones">Read</a></span></li>
+					<li id="ca-viewsource"><span><a href="http://wiki.osdev.org/index.php?title=Bare_Bones&amp;action=edit" title="This page is protected.
+You can view its source [alt-e]" accesskey="e">View source</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="http://wiki.osdev.org/index.php?title=Bare_Bones&amp;action=history" title="Past revisions of this page [alt-h]" accesskey="h">View history</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>Actions</span><a href="http://wiki.osdev.org/Bare_Bones#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-search">
+	<h5><label for="searchInput">Search</label></h5>
+	<form action="http://wiki.osdev.org/index.php" id="searchform">
+		<input type="hidden" name="title" value="Special:Search">
+				<input type="search" name="search" title="Search OSDev Wiki [alt-f]" accesskey="f" id="searchInput">		<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton">		<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton">			</form>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(/skins/common/images/osdev.png);" href="http://wiki.osdev.org/Main_Page" title="Visit the main page"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal" id="p-navigation">
+	<h5>Navigation</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage"><a href="http://wiki.osdev.org/Main_Page" title="Visit the main page [alt-z]" accesskey="z">Main Page</a></li>
+			<li id="n-portal"><a href="http://forum.osdev.org/" rel="nofollow" title="About the project, what you can do, where to find things">Forums</a></li>
+			<li id="n-FAQ"><a href="http://wiki.osdev.org/Category:FAQ">FAQ</a></li>
+			<li id="n-OS-Projects"><a href="http://wiki.osdev.org/Projects">OS Projects</a></li>
+			<li id="n-randompage"><a href="http://wiki.osdev.org/Special:Random" title="Load a random page [alt-x]" accesskey="x">Random page</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- about -->
+<div class="portal" id="p-about">
+	<h5>About</h5>
+	<div class="body">
+		<ul>
+			<li id="n-This-site"><a href="http://wiki.osdev.org/OSDevWiki:About">This site</a></li>
+			<li id="n-Joining"><a href="http://wiki.osdev.org/OSDevWiki:Joining">Joining</a></li>
+			<li id="n-Editing-help"><a href="http://wiki.osdev.org/OSDevWiki:Editing">Editing help</a></li>
+			<li id="n-recentchanges"><a href="http://wiki.osdev.org/Special:RecentChanges" title="A list of recent changes in the wiki [alt-r]" accesskey="r">Recent changes</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /about -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- TOOLBOX -->
+<div class="portal" id="p-tb">
+	<h5>Toolbox</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="http://wiki.osdev.org/Special:WhatLinksHere/Bare_Bones" title="A list of all wiki pages that link here [alt-j]" accesskey="j">What links here</a></li>
+			<li id="t-recentchangeslinked"><a href="http://wiki.osdev.org/Special:RecentChangesLinked/Bare_Bones" title="Recent changes in pages linked from this page [alt-k]" accesskey="k">Related changes</a></li>
+			<li id="t-specialpages"><a href="http://wiki.osdev.org/Special:SpecialPages" title="A list of all special pages [alt-q]" accesskey="q">Special pages</a></li>
+			<li><a href="http://wiki.osdev.org/index.php?title=Bare_Bones&amp;printable=yes" rel="alternate">Printable version</a></li>
+			<li id="t-permalink"><a href="http://wiki.osdev.org/index.php?title=Bare_Bones&amp;oldid=20362" title="Permanent link to this revision of the page">Permanent link</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- LANGUAGES -->
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 11 February 2017, at 12:23.</li>
+											<li id="footer-info-viewcount">This page has been accessed 554,885 times.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="http://wiki.osdev.org/OSDev_Wiki:Privacy_policy" title="OSDev Wiki:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="http://wiki.osdev.org/OSDev_Wiki:About" title="OSDev Wiki:About">About OSDev Wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="http://wiki.osdev.org/OSDev_Wiki:General_disclaimer" title="OSDev Wiki:General disclaimer">Disclaimers</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="./Bare Bones - OSDev Wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+		<script src="./Bare Bones - OSDev Wiki_files/load(5).php"></script>
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+}
+</script><script type="text/javascript" src="./Bare Bones - OSDev Wiki_files/load(6).php"></script>
+<script src="./Bare Bones - OSDev Wiki_files/load(7).php"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,
+	"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mw.user.tokens.set({"editToken":"+\\","watchToken":false});;mw.loader.state({"user.options":"ready","user.tokens":"ready"});
+	
+	/* cache key: wikidb:resourceloader:filter:minify-js:4:19a4b18a9ac79a6b8c60b24af4668814 */
+}
+</script><!-- Served in 0.054 secs. -->
+	
+
+</body></html>
