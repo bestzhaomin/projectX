@@ -1,7 +1,15 @@
-i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+x86_64-elf-as boot.s -o boot.o
+
+x86_64-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+x86_64-elf-gcc -c stdio.c -o stdio.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 
-i686-elf-gcc -T linker.ld -o daVinci.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+
+x86_64-elf-gcc -T linker.ld -o daVinci.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+
+
+x86_64-elf-gcc -T linker.ld -o daVinci.bin -ffreestanding -O2 -nostdlib boot.o ./kernel/kernel.o ../include/stdio.o -lgcc
 
 
 
@@ -16,3 +24,20 @@ qemu-system-i386 -cdrom daVinci.iso
 
 
 qemu-system-i386 -kernel daVinci.bin
+
+
+
+qemu-system-x86_64 -cdrom daVinci.iso
+
+qemu-system-x86_64 -kernel daVinci.bin
+
+
+
+x86_64-elf-objdump -t daVinci.bin
+
+
+
+
+
+
+x86_64-elf-gcc  -o daVinci.bin -ffreestanding -O2 -nostdlib boot.o kernel.o

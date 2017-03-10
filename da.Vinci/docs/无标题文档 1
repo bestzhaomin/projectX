@@ -1,0 +1,16 @@
+dd if=/dev/zero of=diska.img bs=512 count=2880
+ls -l
+dd if=myos.bin of=boot.img bs=512 count=1
+
+
+
+dd if=boot.bin of=boot.img bs=512 count=1
+ls
+qemu-system-i386 -cdrom boot.img
+dd if=/dev/zero of=diska.img bs=512 count=2880
+dd if=diska.img of=boot.img skip=1 seek=1 bs=512 count=2879
+
+
+../binutils-2.28/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+
+../gcc-6.3.0/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers

@@ -11,7 +11,7 @@
 # 32-bit boundary. The signature is in its own section so the header can be
 # forced to be within the first 8 KiB of the kernel file.
 .section .multiboot
-.align 4
+.align 8
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
@@ -53,7 +53,7 @@ _start:
 	# To set up a stack, we set the esp register to point to the top of our
 	# stack (as it grows downwards on x86 systems). This is necessarily done
 	# in assembly as languages such as C cannot function without a stack.
-	mov $stack_top, %esp
+	mov $stack_top, %rsp
 
 	# This is a good place to initialize crucial processor state before the
 	# high-level kernel is entered. It's best to minimize the early
