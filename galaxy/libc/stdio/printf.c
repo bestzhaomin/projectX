@@ -61,6 +61,37 @@ int printf(const char* restrict format, ...) {
 			if (!print(str, len))
 				return -1;
 			written += len;
+		} else if(*format == 'd') {
+			format++;
+			int num = va_arg(parameters, int);
+			int _num = num;
+			
+			if (!maxrem) {
+				// TODO: 设置越界错误号.
+				return -1;
+			}
+			int count = 1;
+			while((_num /= 10))
+				count++;
+            
+			for(; count ; count--) {
+				if(count == 1) {
+					char c = (char) num + 48;
+					if (!print(&c, sizeof(c)))
+						return -1;
+					break;
+				}
+				_num = num;
+				for(int i = 0; i < count - 1; i++)
+					_num /= 10;
+				char c = (char) _num + 48;
+				if (!print(&c, sizeof(c)))
+					return -1;
+				for(int i = 0; i < count - 1; i++) 
+					_num *= 10;
+				num -= _num;
+			}
+			written++;
 		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);
