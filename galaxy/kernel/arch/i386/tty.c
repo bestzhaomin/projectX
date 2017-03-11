@@ -14,25 +14,45 @@ static uint16_t* const VGA_MEMORY = (uint16_t*) 0xB8000;
 static size_t terminal_row;
 static size_t terminal_column;
 static uint8_t terminal_color;
+
+/*显示缓冲区
+ *终端显示区域为一个VGA_WIDTH x VGA_HEIGHT显示矩阵，采用一维数组来组织各个像素；
+   
+   0 1 2 ...                         W
+ 0 -----------------------------------
+ 1 -                                 -
+ 2 -                                 -
+   -                                 -
+ . -                                 -
+ . -                                 -
+ H -----------------------------------
+
+ */
 static uint16_t* terminal_buffer;
 
+/*初始化显示终端
+ *将行与列设置为0,将终端缓冲区指向内存0xB8000
+ */
 void terminal_initialize(void) {
 	terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	terminal_buffer = VGA_MEMORY;
-	for (size_t y = 0; y < VGA_HEIGHT; y++) {
+	for (size_t y = 0; y < VGA_HEIGHT; y++)
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
-	}
 }
 
+/*设置终端的颜色*/
 void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
 
+/*向屏幕指定的位置输出一个字符
+ *使用地卡尔
+ */
 void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
