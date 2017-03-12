@@ -1,0 +1,15 @@
+查看远程版本
+git remote -v
+
+将远程版本下载到本地仓库 mater:temp分支
+git fetch origin master:temp
+
+
+比较本地仓库master与temp分支的不同
+git diff temp
+
+将temp分支合并到本地mater
+git merge temp
+
+删除temp分支
+git branch -d temp
