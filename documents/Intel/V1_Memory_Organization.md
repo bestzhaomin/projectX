@@ -3,7 +3,7 @@ MEMORY ORGANIZATION 内存组织
 
 The memory that the processor addresses on its bus is called physical memory. Physical memory is organized as a sequence of 8-bit bytes. Each byte is assigned a unique address, called a physical address. The physical address space ranges from zero to a maximum of 2 36 − 1 (64 GBytes) if the processor does not support Intel 64 architecture. 
 
-在处理器在其总线（bus）上寻址的内存称为物理内存。物理内存被组织成一个8字节的序列。每个字节分配一个唯一的地址，这个地址被称为物理地址。如果处理器不支持 Intel 64架构，物理地址的范围从0到64GBytes。
+处理器在其总线（bus）上寻址的内存称为物理内存。物理内存被组织成一个8字节的序列。每个字节分配一个唯一的地址，这个地址被称为物理地址。如果处理器不支持 Intel 64架构，物理地址的范围从0到64GBytes。
 
 Virtually any operating system or executive designed to work with an IA-32 or Intel 64 processor will use the processor’s memory management facilities to access memory. These facilities provide features such as segmentation and paging, which allow memory to be managed efficiently and reliably.
 
