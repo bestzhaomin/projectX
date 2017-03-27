@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://wiki.osdev.org/Setting_Up_Paging_With_PAE -->
+<html lang="en" dir="ltr" class="client-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Setting Up Paging With PAE - OSDev Wiki</title>
+
+<meta name="generator" content="MediaWiki 1.18.0">
+<link rel="shortcut icon" href="http://wiki.osdev.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wiki.osdev.org/opensearch_desc.php" title="OSDev Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.osdev.org/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom feed" href="http://wiki.osdev.org/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="stylesheet" href="./Setting Up Paging With PAE - OSDev Wiki_files/load.php">
+<style type="text/css" media="all">.mw-collapsible-toggle{float:right} li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:4250852ed2349a0d4d0fc6509a3e7d4c */
+</style><style type="text/css" media="all">.js-messagebox{margin:1em 5%;padding:0.5em 2.5%;border:1px solid #ccc;background-color:#fcfcfc;font-size:0.8em}.js-messagebox .js-messagebox-group{margin:1px;padding:0.5em 2.5%;border-bottom:1px solid #ddd}.js-messagebox .js-messagebox-group:last-child{border-bottom:thin none transparent}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:8b08bdc91c52a9ffba396dccfb5b473c */
+</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="./Setting Up Paging With PAE - OSDev Wiki_files/load(1).php">
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:c88e2bcd56513749bec09a7e29cb3ffa */
+</style>
+<script src="./Setting Up Paging With PAE - OSDev Wiki_files/load(2).php"></script><script src="./Setting Up Paging With PAE - OSDev Wiki_files/load(3).php"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Setting_Up_Paging_With_PAE", "wgTitle": "Setting Up Paging With PAE", "wgCurRevisionId": 17162, "wgArticleId": 2435, "wgIsArticle": true, "wgAction": "view", "wgUserName": null, "wgUserGroups": ["*"], "wgCategories": ["Level 1 Tutorials", "In Progress", "X86 CPU", "Tutorials"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script><script type="text/javascript" src="./Setting Up Paging With PAE - OSDev Wiki_files/load(4).php"></script>
+<style type="text/css">/*<![CDATA[*/
+.source-c {line-height: normal;}
+.source-c li, .source-c pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for c
+ * CSS class: source-c, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.c.source-c .de1, .c.source-c .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.c.source-c  {font-family:monospace;}
+.c.source-c .imp {font-weight: bold; color: red;}
+.c.source-c li, .c.source-c .li1 {font-weight: normal; vertical-align:top;}
+.c.source-c .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.c.source-c .li2 {font-weight: bold; vertical-align:top;}
+.c.source-c .kw1 {color: #b1b100;}
+.c.source-c .kw2 {color: #000000; font-weight: bold;}
+.c.source-c .kw3 {color: #000066;}
+.c.source-c .kw4 {color: #993333;}
+.c.source-c .co1 {color: #666666; font-style: italic;}
+.c.source-c .co2 {color: #339933;}
+.c.source-c .coMULTI {color: #808080; font-style: italic;}
+.c.source-c .es0 {color: #000099; font-weight: bold;}
+.c.source-c .es1 {color: #000099; font-weight: bold;}
+.c.source-c .es2 {color: #660099; font-weight: bold;}
+.c.source-c .es3 {color: #660099; font-weight: bold;}
+.c.source-c .es4 {color: #660099; font-weight: bold;}
+.c.source-c .es5 {color: #006699; font-weight: bold;}
+.c.source-c .br0 {color: #009900;}
+.c.source-c .sy0 {color: #339933;}
+.c.source-c .st0 {color: #ff0000;}
+.c.source-c .nu0 {color: #0000dd;}
+.c.source-c .nu6 {color: #208080;}
+.c.source-c .nu8 {color: #208080;}
+.c.source-c .nu12 {color: #208080;}
+.c.source-c .nu16 {color:#800080;}
+.c.source-c .nu17 {color:#800080;}
+.c.source-c .nu18 {color:#800080;}
+.c.source-c .nu19 {color:#800080;}
+.c.source-c .me1 {color: #202020;}
+.c.source-c .me2 {color: #202020;}
+.c.source-c .ln-xtra, .c.source-c li.ln-xtra, .c.source-c div.ln-xtra {background-color: #ffc;}
+.c.source-c span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Setting_Up_Paging_With_PAE action-view skin-vector">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;" class="js-messagebox"></div>
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">Setting Up Paging With PAE</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">From OSDev Wiki</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					Jump to: <a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#mw-head">navigation</a>,
+					<a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#p-search">search</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="en" dir="ltr" class="mw-content-ltr"><table style="font-size:95%; line-height:1.5em; padding:0.25em; float:right; margin: 0 0 8px 15px; clear:right; border:1px solid #aaaaaa; background:#eee; text-align:center;;"><tbody><tr><th>Difficulty level</th></tr><tr><td><a href="http://wiki.osdev.org/File:Difficulty_1.png" class="image"><img alt="Difficulty 1.png" src="./Setting Up Paging With PAE - OSDev Wiki_files/Difficulty_1.png" width="46" height="14"></a><br>Beginner</td></tr></tbody></table>
+<center>
+<table style="border: 1px solid #cfcfbf; margin-top: 25px; margin-bottom: 25px; background-color: #f0f0ff; text-align: center;">
+<tbody><tr>
+<td>
+<p><a href="http://wiki.osdev.org/File:Under_Construction.png" class="image" title="This page is under construction!"><img alt="This page is under construction!" src="./Setting Up Paging With PAE - OSDev Wiki_files/Under_Construction.png" width="50" height="50"></a>
+This page is a work in progress and may thus be incomplete. Its content may be changed in the near future.
+</p>
+</td>
+<td>
+</td></tr></tbody></table>
+</center>
+<p>This is a guide to setting up paging with <a href="http://wiki.osdev.org/PAE" title="PAE" class="mw-redirect">PAE</a> enabled. You should read <a href="http://wiki.osdev.org/Setting_Up_Paging" title="Setting Up Paging">Setting Up Paging</a> first.
+</p>
+<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>Contents</h2><span class="toctoggle">&nbsp;[<a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#" class="internal" id="togglelink">hide</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#Differences_between_PAE-Paging_and_Legacy-Paging"><span class="tocnumber">1</span> <span class="toctext">Differences between PAE-Paging and Legacy-Paging</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#Setting_Up_The_Data_Structures"><span class="tocnumber">2</span> <span class="toctext">Setting Up The Data Structures</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#Making_it_run"><span class="tocnumber">3</span> <span class="toctext">Making it run</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#Mapping_the_PD_to_itself"><span class="tocnumber">4</span> <span class="toctext">Mapping the PD to itself</span></a></li>
+</ul>
+</td></tr></tbody></table>
+<h3> <span class="mw-headline" id="Differences_between_PAE-Paging_and_Legacy-Paging">Differences between PAE-Paging and Legacy-Paging</span></h3>
+<ul><li>PAE allows you to access more physical memory, which is usually 64GiB (in fact, this is implementation specific).
+</li><li>A new data structure is added, the so called 'Page-Directory-Pointer-Table'
+</li><li>An entry is now 8-byte-wide (Legacy: 4-byte), so the number of entries is halved to 512 (Legacy: 1024)
+</li><li>If the CPU supports it you can use the NoExecute-bit
+</li></ul>
+<h3> <span class="mw-headline" id="Setting_Up_The_Data_Structures">Setting Up The Data Structures</span></h3>
+<p>As mentioned above the 'Page-Directory-Pointer-Table' is added, which contains 4 Page-Directory-Entries
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">uint64_t</span> page_dir_ptr_tab<span class="br0">[</span><span class="nu0">4</span><span class="br0">]</span> __attribute__<span class="br0">(</span><span class="br0">(</span>aligned<span class="br0">(</span><span class="nu12">0x20</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span> <span class="co1">// must be aligned to (at least)0x20, ...</span>
+    <span class="co1">// ... turning out that you can put more of them into one page, saving memory</span></pre></div></div>
+<p>Keep in mind that the size of the CR3 register remains at 4byte, meaning that a PDPT must be located below 4GiB in physical memory.
+</p><p>Now we need our Page-Directory/-Table
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="co1">// 512 entries</span>
+<span class="kw4">uint64_t</span> page_dir<span class="br0">[</span><span class="nu0">512</span><span class="br0">]</span> __attribute__<span class="br0">(</span><span class="br0">(</span>aligned<span class="br0">(</span><span class="nu12">0x1000</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>  <span class="co1">// must be aligned to page boundary</span>
+<span class="kw4">uint64_t</span> page_tab<span class="br0">[</span><span class="nu0">512</span><span class="br0">]</span> __attribute__<span class="br0">(</span><span class="br0">(</span>aligned<span class="br0">(</span><span class="nu12">0x1000</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></pre></div></div>
+<h3> <span class="mw-headline" id="Making_it_run">Making it run</span></h3>
+<p>Ok, now we have our structures. Now we have to make it run.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1">page_dir_ptr_tab<span class="br0">[</span><span class="nu0">0</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint64_t</span><span class="br0">)</span><span class="sy0">&amp;</span>page_dir <span class="sy0">|</span> <span class="nu0">1</span><span class="sy0">;</span> <span class="co1">// set the page directory into the PDPT and mark it present</span>
+page_dir<span class="br0">[</span><span class="nu0">0</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint64_t</span><span class="br0">)</span><span class="sy0">&amp;</span>p_tab <span class="sy0">|</span> <span class="nu0">3</span><span class="sy0">;</span> <span class="co1">//set the page table into the PD and mark it present/writable</span></pre></div></div>
+<p>Ok, let's map the first 2MiB.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">unsigned</span> <span class="kw4">int</span> i<span class="sy0">,</span> address <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw1">for</span><span class="br0">(</span>i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">512</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span>
+<span class="br0">{</span>
+    page_tab<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> address <span class="sy0">|</span> <span class="nu0">3</span><span class="sy0">;</span> <span class="co1">// map address and mark it present/writable</span>
+    address <span class="sy0">=</span> address <span class="sy0">+</span> <span class="nu12">0x1000</span><span class="sy0">;</span>
+<span class="br0">}</span></pre></div></div>
+<p>Ok, pages are mapped. Now we have to set the PAE-bit and load the PDPT into CR3
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1">asm <span class="kw4">volatile</span> <span class="br0">(</span><span class="st0">"movl&nbsp;%cr4,&nbsp;%eax; bts $5,&nbsp;%eax; movl&nbsp;%eax,&nbsp;%cr4"</span><span class="br0">)</span><span class="sy0">;</span> <span class="co1">// set bit5 in CR4 to enable PAE		 </span>
+asm <span class="kw4">volatile</span> <span class="br0">(</span><span class="st0">"movl&nbsp;%%eax,&nbsp;%%cr3"</span> <span class="sy0">::</span> <span class="st0">"a"</span> <span class="br0">(</span><span class="sy0">&amp;</span>page_dir_ptr_tab<span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span> <span class="co1">// load PDPT into CR3</span></pre></div></div>
+<p>The last thing we need to do is activating paging.
+Simply done:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1">asm <span class="kw4">volatile</span> <span class="br0">(</span><span class="st0">"movl&nbsp;%cr0,&nbsp;%eax; orl $0x80000000,&nbsp;%eax; movl&nbsp;%eax,&nbsp;%cr0;"</span><span class="br0">)</span><span class="sy0">;</span></pre></div></div>
+<p>PAE-Paging should now be enabled.
+</p>
+<h3> <span class="mw-headline" id="Mapping_the_PD_to_itself">Mapping the PD to itself</span></h3>
+<p>In Legacy-Paging this is quite easy. Just map the PD to the last entry of itself.
+</p><p>In PAE-Paging we have 4 entries and the PDPT, so how does it work?
+Depending on where you want to set it you just map all 4 directories into one of those!
+Example (PD's at end of virtual memory)
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">uint64_t</span> <span class="sy0">*</span> page_dir <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint64_t</span><span class="sy0">*</span><span class="br0">)</span>page_dir_ptr_tab<span class="br0">[</span><span class="nu0">3</span><span class="br0">]</span><span class="sy0">;</span> <span class="co1">// get the page directory (you should 'and' the flags away)</span>
+page_dir<span class="br0">[</span><span class="nu0">511</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint64_t</span><span class="br0">)</span>page_dir<span class="sy0">;</span> <span class="co1">// map pd to itself</span>
+page_dir<span class="br0">[</span><span class="nu0">510</span><span class="br0">]</span> <span class="sy0">=</span> page_dir_ptr_tab<span class="br0">[</span><span class="nu0">2</span><span class="br0">]</span><span class="sy0">;</span> <span class="co1">// map pd3 to it</span>
+page_dir<span class="br0">[</span><span class="nu0">509</span><span class="br0">]</span> <span class="sy0">=</span> page_dir_ptr_tab<span class="br0">[</span><span class="nu0">1</span><span class="br0">]</span><span class="sy0">;</span> <span class="co1">// map pd2 to it</span>
+page_dir<span class="br0">[</span><span class="nu0">508</span><span class="br0">]</span> <span class="sy0">=</span> page_dir_ptr_tab<span class="br0">[</span><span class="nu0">0</span><span class="br0">]</span><span class="sy0">;</span> <span class="co1">// map pd1 to it</span>
+page_dir<span class="br0">[</span><span class="nu0">507</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">uint64_t</span><span class="br0">)</span><span class="sy0">&amp;</span>page_dir_ptr_tab<span class="sy0">;</span> <span class="coMULTI">/* map the PDPT to the directory</span></pre></div></div>
+<p>Now you can access all structures in virtual memory. Mapping the PDPT into the directory wastes quite much virtual memory as only 32 bytes are used, but if you allocate most/all PDPT's into one page then you can access ALL of them, which can be quite useful.
+</p><p>You can also statically allocate the PDPT at boot time, put the 4 page directory addresses in your process struct, and then just write the same PDPT address to CR3 on a context switch after you've 
+patched the PDPT.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 148/1000000
+Post-expand include size: 687/2097152 bytes
+Template argument size: 44/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:2435-0!*!0!!en!2!* and timestamp 20170327134842 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				Retrieved from "<a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;oldid=17162">http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;oldid=17162</a>"				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks"><a href="http://wiki.osdev.org/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="http://wiki.osdev.org/Category:Level_1_Tutorials" title="Category:Level 1 Tutorials">Level 1 Tutorials</a></li><li><a href="http://wiki.osdev.org/Category:In_Progress" title="Category:In Progress">In Progress</a></li><li><a href="http://wiki.osdev.org/Category:X86_CPU" title="Category:X86 CPU">X86 CPU</a></li><li><a href="http://wiki.osdev.org/Category:Tutorials" title="Category:Tutorials">Tutorials</a></li></ul></div></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>Personal tools</h5>
+	<ul>
+		<li id="pt-login"><a href="http://wiki.osdev.org/index.php?title=Special:UserLogin&amp;returnto=Setting_Up_Paging_With_PAE" title="You are encouraged to log in; however, it is not mandatory [alt-o]" accesskey="o">Log in</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>Namespaces</h5>
+	<ul>
+					<li id="ca-nstab-main" class="selected"><span><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE" title="View the content page [alt-c]" accesskey="c">Page</a></span></li>
+					<li id="ca-talk" class="new"><span><a href="http://wiki.osdev.org/index.php?title=Talk:Setting_Up_Paging_With_PAE&amp;action=edit&amp;redlink=1" title="Discussion about the content page [alt-t]" accesskey="t">Discussion</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>Variants</span><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-views" class="vectorTabs">
+	<h5>Views</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE">Read</a></span></li>
+					<li id="ca-viewsource"><span><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;action=edit" title="This page is protected.
+You can view its source [alt-e]" accesskey="e">View source</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;action=history" title="Past revisions of this page [alt-h]" accesskey="h">View history</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>Actions</span><a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-search">
+	<h5><label for="searchInput">Search</label></h5>
+	<form action="http://wiki.osdev.org/index.php" id="searchform">
+		<input type="hidden" name="title" value="Special:Search">
+				<input type="search" name="search" title="Search OSDev Wiki [alt-f]" accesskey="f" id="searchInput">		<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton">		<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton">			</form>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(/skins/common/images/osdev.png);" href="http://wiki.osdev.org/Main_Page" title="Visit the main page"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal" id="p-navigation">
+	<h5>Navigation</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage"><a href="http://wiki.osdev.org/Main_Page" title="Visit the main page [alt-z]" accesskey="z">Main Page</a></li>
+			<li id="n-portal"><a href="http://forum.osdev.org/" rel="nofollow" title="About the project, what you can do, where to find things">Forums</a></li>
+			<li id="n-FAQ"><a href="http://wiki.osdev.org/Category:FAQ">FAQ</a></li>
+			<li id="n-OS-Projects"><a href="http://wiki.osdev.org/Projects">OS Projects</a></li>
+			<li id="n-randompage"><a href="http://wiki.osdev.org/Special:Random" title="Load a random page [alt-x]" accesskey="x">Random page</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- about -->
+<div class="portal" id="p-about">
+	<h5>About</h5>
+	<div class="body">
+		<ul>
+			<li id="n-This-site"><a href="http://wiki.osdev.org/OSDevWiki:About">This site</a></li>
+			<li id="n-Joining"><a href="http://wiki.osdev.org/OSDevWiki:Joining">Joining</a></li>
+			<li id="n-Editing-help"><a href="http://wiki.osdev.org/OSDevWiki:Editing">Editing help</a></li>
+			<li id="n-recentchanges"><a href="http://wiki.osdev.org/Special:RecentChanges" title="A list of recent changes in the wiki [alt-r]" accesskey="r">Recent changes</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /about -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- TOOLBOX -->
+<div class="portal" id="p-tb">
+	<h5>Toolbox</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="http://wiki.osdev.org/Special:WhatLinksHere/Setting_Up_Paging_With_PAE" title="A list of all wiki pages that link here [alt-j]" accesskey="j">What links here</a></li>
+			<li id="t-recentchangeslinked"><a href="http://wiki.osdev.org/Special:RecentChangesLinked/Setting_Up_Paging_With_PAE" title="Recent changes in pages linked from this page [alt-k]" accesskey="k">Related changes</a></li>
+			<li id="t-specialpages"><a href="http://wiki.osdev.org/Special:SpecialPages" title="A list of all special pages [alt-q]" accesskey="q">Special pages</a></li>
+			<li><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;printable=yes" rel="alternate">Printable version</a></li>
+			<li id="t-permalink"><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging_With_PAE&amp;oldid=17162" title="Permanent link to this revision of the page">Permanent link</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- LANGUAGES -->
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 1 December 2014, at 09:28.</li>
+											<li id="footer-info-viewcount">This page has been accessed 28,052 times.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="http://wiki.osdev.org/OSDev_Wiki:Privacy_policy" title="OSDev Wiki:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="http://wiki.osdev.org/OSDev_Wiki:About" title="OSDev Wiki:About">About OSDev Wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="http://wiki.osdev.org/OSDev_Wiki:General_disclaimer" title="OSDev Wiki:General disclaimer">Disclaimers</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="./Setting Up Paging With PAE - OSDev Wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+		<script src="./Setting Up Paging With PAE - OSDev Wiki_files/load(5).php"></script>
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+}
+</script><script type="text/javascript" src="./Setting Up Paging With PAE - OSDev Wiki_files/load(6).php"></script>
+<script src="./Setting Up Paging With PAE - OSDev Wiki_files/load(7).php"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,
+	"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mw.user.tokens.set({"editToken":"+\\","watchToken":false});;mw.loader.state({"user.options":"ready","user.tokens":"ready"});
+	
+	/* cache key: wikidb:resourceloader:filter:minify-js:4:19a4b18a9ac79a6b8c60b24af4668814 */
+}
+</script><!-- Served in 0.035 secs. -->
+	
+
+</body></html>

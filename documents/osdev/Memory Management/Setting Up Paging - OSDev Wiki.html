@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)http://wiki.osdev.org/Setting_Up_Paging -->
+<html lang="en" dir="ltr" class="client-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Setting Up Paging - OSDev Wiki</title>
+
+<meta name="generator" content="MediaWiki 1.18.0">
+<link rel="shortcut icon" href="http://wiki.osdev.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wiki.osdev.org/opensearch_desc.php" title="OSDev Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.osdev.org/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom feed" href="http://wiki.osdev.org/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="stylesheet" href="./Setting Up Paging - OSDev Wiki_files/load.php">
+<style type="text/css" media="all">.mw-collapsible-toggle{float:right} li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:4250852ed2349a0d4d0fc6509a3e7d4c */
+</style><style type="text/css" media="all">.js-messagebox{margin:1em 5%;padding:0.5em 2.5%;border:1px solid #ccc;background-color:#fcfcfc;font-size:0.8em}.js-messagebox .js-messagebox-group{margin:1px;padding:0.5em 2.5%;border-bottom:1px solid #ddd}.js-messagebox .js-messagebox-group:last-child{border-bottom:thin none transparent}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:8b08bdc91c52a9ffba396dccfb5b473c */
+</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="./Setting Up Paging - OSDev Wiki_files/load(1).php">
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:c88e2bcd56513749bec09a7e29cb3ffa */
+</style>
+<script src="./Setting Up Paging - OSDev Wiki_files/load(2).php"></script><script src="./Setting Up Paging - OSDev Wiki_files/load(3).php"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Setting_Up_Paging", "wgTitle": "Setting Up Paging", "wgCurRevisionId": 18656, "wgArticleId": 2264, "wgIsArticle": true, "wgAction": "view", "wgUserName": null, "wgUserGroups": ["*"], "wgCategories": ["Level 1 Tutorials", "In Progress", "X86 CPU", "Tutorials"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script><script type="text/javascript" src="./Setting Up Paging - OSDev Wiki_files/load(4).php"></script>
+<style type="text/css">/*<![CDATA[*/
+.source-c {line-height: normal;}
+.source-c li, .source-c pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for c
+ * CSS class: source-c, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.c.source-c .de1, .c.source-c .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.c.source-c  {font-family:monospace;}
+.c.source-c .imp {font-weight: bold; color: red;}
+.c.source-c li, .c.source-c .li1 {font-weight: normal; vertical-align:top;}
+.c.source-c .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.c.source-c .li2 {font-weight: bold; vertical-align:top;}
+.c.source-c .kw1 {color: #b1b100;}
+.c.source-c .kw2 {color: #000000; font-weight: bold;}
+.c.source-c .kw3 {color: #000066;}
+.c.source-c .kw4 {color: #993333;}
+.c.source-c .co1 {color: #666666; font-style: italic;}
+.c.source-c .co2 {color: #339933;}
+.c.source-c .coMULTI {color: #808080; font-style: italic;}
+.c.source-c .es0 {color: #000099; font-weight: bold;}
+.c.source-c .es1 {color: #000099; font-weight: bold;}
+.c.source-c .es2 {color: #660099; font-weight: bold;}
+.c.source-c .es3 {color: #660099; font-weight: bold;}
+.c.source-c .es4 {color: #660099; font-weight: bold;}
+.c.source-c .es5 {color: #006699; font-weight: bold;}
+.c.source-c .br0 {color: #009900;}
+.c.source-c .sy0 {color: #339933;}
+.c.source-c .st0 {color: #ff0000;}
+.c.source-c .nu0 {color: #0000dd;}
+.c.source-c .nu6 {color: #208080;}
+.c.source-c .nu8 {color: #208080;}
+.c.source-c .nu12 {color: #208080;}
+.c.source-c .nu16 {color:#800080;}
+.c.source-c .nu17 {color:#800080;}
+.c.source-c .nu18 {color:#800080;}
+.c.source-c .nu19 {color:#800080;}
+.c.source-c .me1 {color: #202020;}
+.c.source-c .me2 {color: #202020;}
+.c.source-c .ln-xtra, .c.source-c li.ln-xtra, .c.source-c div.ln-xtra {background-color: #ffc;}
+.c.source-c span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><style type="text/css">/*<![CDATA[*/
+.source-asm {line-height: normal;}
+.source-asm li, .source-asm pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for asm
+ * CSS class: source-asm, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.asm.source-asm .de1, .asm.source-asm .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.asm.source-asm  {font-family:monospace;}
+.asm.source-asm .imp {font-weight: bold; color: red;}
+.asm.source-asm li, .asm.source-asm .li1 {font-weight: normal; vertical-align:top;}
+.asm.source-asm .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.asm.source-asm .li2 {font-weight: bold; vertical-align:top;}
+.asm.source-asm .kw1 {color: #00007f; font-weight: bold;}
+.asm.source-asm .kw2 {color: #0000ff; font-weight: bold;}
+.asm.source-asm .kw3 {color: #00007f;}
+.asm.source-asm .kw4 {color: #000000; font-weight: bold;}
+.asm.source-asm .kw5 {color: #000000; font-weight: bold;}
+.asm.source-asm .co1 {color: #666666; font-style: italic;}
+.asm.source-asm .co2 {color: #adadad; font-style: italic;}
+.asm.source-asm .es0 {color: #000099; font-weight: bold;}
+.asm.source-asm .br0 {color: #009900; font-weight: bold;}
+.asm.source-asm .sy0 {color: #339933;}
+.asm.source-asm .st0 {color: #7f007f;}
+.asm.source-asm .nu0 {color: #0000ff;}
+.asm.source-asm .ln-xtra, .asm.source-asm li.ln-xtra, .asm.source-asm div.ln-xtra {background-color: #ffc;}
+.asm.source-asm span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Setting_Up_Paging action-view skin-vector">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;" class="js-messagebox"></div>
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">Setting Up Paging</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">From OSDev Wiki</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					Jump to: <a href="http://wiki.osdev.org/Setting_Up_Paging#mw-head">navigation</a>,
+					<a href="http://wiki.osdev.org/Setting_Up_Paging#p-search">search</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="en" dir="ltr" class="mw-content-ltr"><table style="font-size:95%; line-height:1.5em; padding:0.25em; float:right; margin: 0 0 8px 15px; clear:right; border:1px solid #aaaaaa; background:#eee; text-align:center;;"><tbody><tr><th>Difficulty level</th></tr><tr><td><a href="http://wiki.osdev.org/File:Difficulty_1.png" class="image"><img alt="Difficulty 1.png" src="./Setting Up Paging - OSDev Wiki_files/Difficulty_1.png" width="46" height="14"></a><br>Beginner</td></tr></tbody></table>
+<center>
+<table style="border: 1px solid #cfcfbf; margin-top: 25px; margin-bottom: 25px; background-color: #f0f0ff; text-align: center;">
+<tbody><tr>
+<td>
+<p><a href="http://wiki.osdev.org/File:Under_Construction.png" class="image" title="This page is under construction!"><img alt="This page is under construction!" src="./Setting Up Paging - OSDev Wiki_files/Under_Construction.png" width="50" height="50"></a>
+This page is a work in progress and may thus be incomplete. Its content may be changed in the near future.
+</p>
+</td>
+<td>
+</td></tr></tbody></table>
+</center>
+<p>This is a guide to setting up paging. It will teach you the basic concepts behind paging and how it can help you with your OS. This example will concentrate on Legacy Non-PSE Non-PAE paging (See also <a href="http://wiki.osdev.org/Setting_Up_Paging_With_PAE" title="Setting Up Paging With PAE">Setting Up Paging With PAE</a>). 
+</p><p>Paging is a term that refers to the management of the computer's <i>virtual memory</i>. If you have not yet created a <i>physical memory manager</i>, please read and follow <a href="http://wiki.osdev.org/Page_Frame_Allocation" title="Page Frame Allocation">Page Frame Allocation</a> before continuing with this article.
+</p>
+<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>Contents</h2><span class="toctoggle">&nbsp;[<a href="http://wiki.osdev.org/Setting_Up_Paging#" class="internal" id="togglelink">hide</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.osdev.org/Setting_Up_Paging#Basic_Paging"><span class="tocnumber">1</span> <span class="toctext">Basic Paging</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="http://wiki.osdev.org/Setting_Up_Paging#Creating_a_Blank_Page_Directory"><span class="tocnumber">1.1</span> <span class="toctext">Creating a Blank Page Directory</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.osdev.org/Setting_Up_Paging#Creating_Your_First_Page_Table"><span class="tocnumber">1.2</span> <span class="toctext">Creating Your First Page Table</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="http://wiki.osdev.org/Setting_Up_Paging#Put_the_Page_Table_in_the_Page_Directory"><span class="tocnumber">1.3</span> <span class="toctext">Put the Page Table in the Page Directory</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="http://wiki.osdev.org/Setting_Up_Paging#Enable_Paging"><span class="tocnumber">1.4</span> <span class="toctext">Enable Paging</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.osdev.org/Setting_Up_Paging#More_Advanced_Paging_Example"><span class="tocnumber">2</span> <span class="toctext">More Advanced Paging Example</span></a></li>
+</ul>
+</td></tr></tbody></table>
+<h2> <span class="mw-headline" id="Basic_Paging">Basic Paging</span></h2>
+<p>Paging allows you to have more than one virtual address space mapped into the physical address space. The <a href="http://wiki.osdev.org/MMU" title="MMU">MMU</a> uses what is called a Page Directory to map virtual addresses to physical addresses.
+</p><p><br>
+<b>Page Directory</b> - A table in memory which the MMU uses to find the page tables.
+</p><p><br>
+Each index in the Page Directory is a pointer to a Page table.
+</p><p><br>
+<b>Page Table</b> - A table in memory that describes how the MMU should translate a certain range of addresses.
+</p><p><br>
+Each index in a Page Table contains the physical memory address to which a certain page should be mapped.
+</p>
+<h3> <span class="mw-headline" id="Creating_a_Blank_Page_Directory">Creating a Blank Page Directory</span></h3>
+<p>The first step is to create a blank page directory. The page directory is blank because we have not yet created any page tables where the entries in the page directory can point.
+</p><p>Note that all of your paging structures need to be at page-aligned addresses (i.e. being a multiple of 4096). If you have already written a page frame allocator then you can use it to allocate the first free page after your kernel for the page directory. If you have not created a proper page allocator, simply finding the first free page-aligned address after the kernel will be fine, but you should write the page frame allocator as soon as possible. Another temporary solution (used in this tutorial) is to simply declare global objects with __attribute__((align(4096))). Note that this is a GCC extension. It allows you to declare data aligned with some mark, such as 4KiB here. We can use this because we are only using one page directory and one page table. Please note that on the real world, dynamic allocation is too basic to be missing, and paging structures are constantly being added, deleted, and modified. For now, just use static objects;
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">uint32_t</span> page_directory<span class="br0">[</span><span class="nu0">1024</span><span class="br0">]</span> __attribute__<span class="br0">(</span><span class="br0">(</span>aligned<span class="br0">(</span><span class="nu0">4096</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></pre></div></div>
+<p>Now that we have a page directory, we need to blank it. The page directory should have exactly 1024 entries. We will set each entry to not present so that if the MMU looks for that page table, it will see that it is not there (...yet. We will add the first page table in a moment).
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="co1">//set each entry to not present</span>
+<span class="kw4">int</span> i<span class="sy0">;</span>
+<span class="kw1">for</span><span class="br0">(</span>i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">1024</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span>
+<span class="br0">{</span>
+    <span class="co1">// This sets the following flags to the pages:</span>
+    <span class="co1">//   Supervisor: Only kernel-mode can access them</span>
+    <span class="co1">//   Write Enabled: It can be both read from and written to</span>
+    <span class="co1">//   Not Present: The page table is not present</span>
+    page_directory<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> <span class="nu12">0x00000002</span><span class="sy0">;</span>
+<span class="br0">}</span></pre></div></div>
+<p>A page is "not present" is one which is not (intended to be) used. If the MMU finds one, it will Page Fault. Non-present pages are useful for technics such as Lazy Loading. It's also used when a page has been swapped to disk, so the Page Fault is not interpreted as an error by the OS. To the OS, it means someone needs a page it swapped to disk, so it is restored. A page fault over a page that was never swapped is a error by which the OS has a reason to kill the process.
+</p>
+<h3> <span class="mw-headline" id="Creating_Your_First_Page_Table">Creating Your First Page Table</span></h3>
+<p>The second step is to create a basic page table. In this example we choose to fill up the whole first page table with addresses for the MMU. Because each page is 4 kilobytes large, and because each page table has exactly 1024 entries, filling up the whole table causes us to map 4 megabytes of memory. Also, the page directory is 1024 entries long, so everything can map up to 4GiB, the full 32-bit address space. Remembered the non-present page trick? Without it, we would use 16MiB per each paging structure. A single page directory needs 4KiB, but it can map some tables as non-present, effectively removing their space needs.
+</p><p>Now, its time to create a new page table.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">uint32_t</span> first_page_table<span class="br0">[</span><span class="nu0">1024</span><span class="br0">]</span> __attribute__<span class="br0">(</span><span class="br0">(</span>aligned<span class="br0">(</span><span class="nu0">4096</span><span class="br0">)</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></pre></div></div>
+<p>We now need to fill each index in the table with an address to which the MMU will map that page. Index 0 (zero) holds the address from where the first page will be mapped. Likewise, index 1 (one) holds the address for the second page and index 1023 holds the address of the 1024th page. That's for the first table. So, to get the page at which a certain index is mapped is as simple as (PageDirIndexOfTable * 1024) + PageTabIndexOfPage. If you multiply that by 4, you'll get the address (in KiB) at which the page will be loaded. For example, page index 123 in table index 456 will be mapped to (456 * 1024) + 123 = 467067. 467067 * 4 = 1868268 KiB = 1824.48046875 MiB = 1.781719207763671875 GiB. It's easy, right?
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="co1">// holds the physical address where we want to start mapping these pages to.</span>
+<span class="co1">// in this case, we want to map these pages to the very beginning of memory.</span>
+<span class="kw4">unsigned</span> <span class="kw4">int</span> i<span class="sy0">;</span>
+&nbsp;
+<span class="co1">//we will fill all 1024 entries in the table, mapping 4 megabytes</span>
+<span class="kw1">for</span><span class="br0">(</span>i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="nu0">1024</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span>
+<span class="br0">{</span>
+    <span class="co1">// As the address is page aligned, it will always leave 12 bits zeroed.</span>
+    <span class="co1">// Those bits are used by the attributes&nbsp;;)</span>
+    first_page_table<span class="br0">[</span>i<span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span>i <span class="sy0">*</span> <span class="nu12">0x1000</span><span class="br0">)</span> <span class="sy0">|</span> <span class="nu0">3</span><span class="sy0">;</span> <span class="co1">// attributes: supervisor level, read/write, present.</span>
+<span class="br0">}</span></pre></div></div>
+<h3> <span class="mw-headline" id="Put_the_Page_Table_in_the_Page_Directory">Put the Page Table in the Page Directory</span></h3>
+<p>The third step is to put the newly created page table into our blank page directory. We do this by setting the first entry in the page directory to the address of our page table.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="co1">// attributes: supervisor level, read/write, present</span>
+page_directory<span class="br0">[</span><span class="nu0">0</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">(</span><span class="br0">(</span><span class="kw4">unsigned</span> <span class="kw4">int</span><span class="br0">)</span>first_page_table<span class="br0">)</span> <span class="sy0">|</span> <span class="nu0">3</span><span class="sy0">;</span></pre></div></div>
+<h3> <span class="mw-headline" id="Enable_Paging">Enable Paging</span></h3>
+<p>The final step is to actually enable paging. First we tell the processor where to find our page directory by putting it's address into the CR3 register. Because C code cannot directly access the computer's registers, we will need to use assembly code to access CR3. The following assembly is written for GAS. If you use a different assembler then you will need to translate between this assembly format and the format supported by your assembler.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="asm source-asm"><pre class="de1"><span class="sy0">.</span>text
+<span class="sy0">.</span>globl loadPageDirectory
+loadPageDirectory<span class="sy0">:</span>
+<span class="kw1">push</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">esp</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">mov</span> <span class="nu0">8</span><span class="br0">(</span><span class="sy0">%</span><span class="kw3">esp</span><span class="br0">)</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">eax</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">eax</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">cr3</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">ebp</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">esp</span>
+<span class="kw1">pop</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">ret</span></pre></div></div>
+<p>This small assembly function takes one parameter: the address of the page directory. It then loads the address onto the CR3 register, where the MMU will find it. But wait! Paging is not still enabled. That's what we will do next. We must set the 32th bit in the CR0 register, the paging bit. This operation also requires assembly code. Once done, paging will be enabled.
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="asm source-asm"><pre class="de1"><span class="sy0">.</span>text
+<span class="sy0">.</span>globl enablePaging
+enablePaging<span class="sy0">:</span>
+<span class="kw1">push</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">esp</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">cr0</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">eax</span>
+<span class="kw1">or</span> $<span class="nu0">0x80000000</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">eax</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">eax</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">cr0</span>
+<span class="kw1">mov</span> <span class="sy0">%</span><span class="kw3">ebp</span><span class="sy0">,</span> <span class="sy0">%</span><span class="kw3">esp</span>
+<span class="kw1">pop</span> <span class="sy0">%</span><span class="kw3">ebp</span>
+<span class="kw1">ret</span></pre></div></div>
+<p>Now lets call the functions!
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="co1">// This should go outside any function..</span>
+<span class="kw2">extern</span> <span class="kw4">void</span> loadPageDirectory<span class="br0">(</span><span class="kw4">unsigned</span> <span class="kw4">int</span><span class="sy0">*</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="kw2">extern</span> <span class="kw4">void</span> enablePaging<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="co1">// And this inside a function</span>
+loadPageDirectory<span class="br0">(</span>page_directory<span class="br0">)</span><span class="sy0">;</span>
+enablePaging<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></pre></div></div>
+<p>Paging should now be enabled. Try printing something to screen like "Hello, paging world!". If all goes well, congratulations! You've just learned the basics of paging. But there are lots of other things to do with it. You won't be able to almost all of them for now. Just remember that you have a little friend in the CR3 register that will help you one day.
+</p>
+<h2> <span class="mw-headline" id="More_Advanced_Paging_Example">More Advanced Paging Example</span></h2>
+<p>Add sections on how to dynamically get and free pages...
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 175/1000000
+Post-expand include size: 687/2097152 bytes
+Template argument size: 44/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:2264-0!*!0!!en!2!* and timestamp 20170327134842 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				Retrieved from "<a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;oldid=18656">http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;oldid=18656</a>"				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks"><a href="http://wiki.osdev.org/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="http://wiki.osdev.org/Category:Level_1_Tutorials" title="Category:Level 1 Tutorials">Level 1 Tutorials</a></li><li><a href="http://wiki.osdev.org/Category:In_Progress" title="Category:In Progress">In Progress</a></li><li><a href="http://wiki.osdev.org/Category:X86_CPU" title="Category:X86 CPU">X86 CPU</a></li><li><a href="http://wiki.osdev.org/Category:Tutorials" title="Category:Tutorials">Tutorials</a></li></ul></div></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>Personal tools</h5>
+	<ul>
+		<li id="pt-login"><a href="http://wiki.osdev.org/index.php?title=Special:UserLogin&amp;returnto=Setting_Up_Paging" title="You are encouraged to log in; however, it is not mandatory [alt-o]" accesskey="o">Log in</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>Namespaces</h5>
+	<ul>
+					<li id="ca-nstab-main" class="selected"><span><a href="http://wiki.osdev.org/Setting_Up_Paging" title="View the content page [alt-c]" accesskey="c">Page</a></span></li>
+					<li id="ca-talk"><span><a href="http://wiki.osdev.org/Talk:Setting_Up_Paging" title="Discussion about the content page [alt-t]" accesskey="t">Discussion</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>Variants</span><a href="http://wiki.osdev.org/Setting_Up_Paging#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-views" class="vectorTabs">
+	<h5>Views</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="http://wiki.osdev.org/Setting_Up_Paging">Read</a></span></li>
+					<li id="ca-viewsource"><span><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;action=edit" title="This page is protected.
+You can view its source [alt-e]" accesskey="e">View source</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;action=history" title="Past revisions of this page [alt-h]" accesskey="h">View history</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>Actions</span><a href="http://wiki.osdev.org/Setting_Up_Paging#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-search">
+	<h5><label for="searchInput">Search</label></h5>
+	<form action="http://wiki.osdev.org/index.php" id="searchform">
+		<input type="hidden" name="title" value="Special:Search">
+				<input type="search" name="search" title="Search OSDev Wiki [alt-f]" accesskey="f" id="searchInput">		<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton">		<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton">			</form>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(/skins/common/images/osdev.png);" href="http://wiki.osdev.org/Main_Page" title="Visit the main page"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal" id="p-navigation">
+	<h5>Navigation</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage"><a href="http://wiki.osdev.org/Main_Page" title="Visit the main page [alt-z]" accesskey="z">Main Page</a></li>
+			<li id="n-portal"><a href="http://forum.osdev.org/" rel="nofollow" title="About the project, what you can do, where to find things">Forums</a></li>
+			<li id="n-FAQ"><a href="http://wiki.osdev.org/Category:FAQ">FAQ</a></li>
+			<li id="n-OS-Projects"><a href="http://wiki.osdev.org/Projects">OS Projects</a></li>
+			<li id="n-randompage"><a href="http://wiki.osdev.org/Special:Random" title="Load a random page [alt-x]" accesskey="x">Random page</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- about -->
+<div class="portal" id="p-about">
+	<h5>About</h5>
+	<div class="body">
+		<ul>
+			<li id="n-This-site"><a href="http://wiki.osdev.org/OSDevWiki:About">This site</a></li>
+			<li id="n-Joining"><a href="http://wiki.osdev.org/OSDevWiki:Joining">Joining</a></li>
+			<li id="n-Editing-help"><a href="http://wiki.osdev.org/OSDevWiki:Editing">Editing help</a></li>
+			<li id="n-recentchanges"><a href="http://wiki.osdev.org/Special:RecentChanges" title="A list of recent changes in the wiki [alt-r]" accesskey="r">Recent changes</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /about -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- TOOLBOX -->
+<div class="portal" id="p-tb">
+	<h5>Toolbox</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="http://wiki.osdev.org/Special:WhatLinksHere/Setting_Up_Paging" title="A list of all wiki pages that link here [alt-j]" accesskey="j">What links here</a></li>
+			<li id="t-recentchangeslinked"><a href="http://wiki.osdev.org/Special:RecentChangesLinked/Setting_Up_Paging" title="Recent changes in pages linked from this page [alt-k]" accesskey="k">Related changes</a></li>
+			<li id="t-specialpages"><a href="http://wiki.osdev.org/Special:SpecialPages" title="A list of all special pages [alt-q]" accesskey="q">Special pages</a></li>
+			<li><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;printable=yes" rel="alternate">Printable version</a></li>
+			<li id="t-permalink"><a href="http://wiki.osdev.org/index.php?title=Setting_Up_Paging&amp;oldid=18656" title="Permanent link to this revision of the page">Permanent link</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- LANGUAGES -->
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 26 November 2015, at 16:29.</li>
+											<li id="footer-info-viewcount">This page has been accessed 60,530 times.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="http://wiki.osdev.org/OSDev_Wiki:Privacy_policy" title="OSDev Wiki:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="http://wiki.osdev.org/OSDev_Wiki:About" title="OSDev Wiki:About">About OSDev Wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="http://wiki.osdev.org/OSDev_Wiki:General_disclaimer" title="OSDev Wiki:General disclaimer">Disclaimers</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="./Setting Up Paging - OSDev Wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+		<script src="./Setting Up Paging - OSDev Wiki_files/load(5).php"></script>
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+}
+</script><script type="text/javascript" src="./Setting Up Paging - OSDev Wiki_files/load(6).php"></script>
+<script src="./Setting Up Paging - OSDev Wiki_files/load(7).php"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,
+	"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mw.user.tokens.set({"editToken":"+\\","watchToken":false});;mw.loader.state({"user.options":"ready","user.tokens":"ready"});
+	
+	/* cache key: wikidb:resourceloader:filter:minify-js:4:19a4b18a9ac79a6b8c60b24af4668814 */
+}
+</script><!-- Served in 0.043 secs. -->
+	
+
+</body></html>
